@@ -1,0 +1,17 @@
+.menu {
+    float: left;
+    width: 10%;
+    height: 500px;
+    background-color: gray;
+    padding-left: 25px;
+}
+.link_menu {
+    padding: 5px 10px;
+}
+div a {
+    text-decoration: none;
+    margin-bottom: 30px;
+}
+.active_link {
+    color: aqua;
+}
