@@ -1,10 +1,12 @@
 import {ProfileAPI} from "../../API/api";
+import {stopSubmit} from "redux-form";
 
 const ADD_POST = 'ADD-POST';
 // const USER_TEXT_POST_WRITE = 'USER-TEXT-POST-WRITE';
 const SET_USER_PROFILE = 'social-network/profile/SET_USER_DATA';
 const SET_USER_STATUS = 'social-network/profile/SET_USER_STATUS'
 const DELETE_POST = 'social-network/profile/DELETE_POST'
+const SAVE_NEW_PHOTO_SUCCESS = "social-network/profile/SAVE_NEW_PHOTO_SUCCESS"
 
 let initialState = {
     posts_from_server: [
@@ -43,6 +45,10 @@ const profileReducer = (state = initialState, action) => {
             return {
                 ...state, userStatus: action.status
             }
+        case SAVE_NEW_PHOTO_SUCCESS:
+            return {
+                ...state,profile: {...state.profile, photos: action.photos}
+            }
         default:
             return state;
     }
@@ -69,6 +75,13 @@ export const setUserStatus = (status) => (
     {type: SET_USER_STATUS, status}
 )
 
+export const setNewPhotoSuccess = (photos) => {
+    return {
+        type: SAVE_NEW_PHOTO_SUCCESS,
+        photos
+    }
+}
+
 export const getProfile = (userId) => {
     return async (dispatch) => {
         let response = await ProfileAPI.getProfile(userId)
@@ -89,4 +102,26 @@ export const updateUserStatus = (status) => {
         })
     }
 }
+
+export const saveNewPhoto = photo => async dispatch => {
+    let response = await ProfileAPI.savePhoto(photo)
+    if (response.data.resultCode === 0) {
+        dispatch(setNewPhotoSuccess(response.data.data.photos))
+    }
+}
+
+export const saveProfileData = profileData => async (dispatch, getState) => {
+    const userId = getState().auth.userId
+    let response = await ProfileAPI.saveProfile(profileData)
+    if (response.data.resultCode === 0) {
+        dispatch(getProfile(userId))
+    }
+    else {
+        dispatch(stopSubmit("profileDataForm", {_error: response.data.messages[0]}))
+        // {"contacts": {"facebook": response.data.messages[0]}
+        return Promise.reject(response.data.messages[0])
+    }
+}
+
+
 export default profileReducer

@@ -1,14 +1,20 @@
 import React, {Component} from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getProfile, getUserStatus, updateUserStatus} from "../../Redux/Reducers/profile-reducer";
+import {
+    getProfile,
+    getUserStatus,
+    saveNewPhoto,
+    saveProfileData,
+    updateUserStatus
+} from "../../Redux/Reducers/profile-reducer";
 import {withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 
 class ProfileContainer extends Component {
 
-    componentDidMount() {
+    renewalProfile () {
         let userId = this.props.match.params.userId;
         if (!userId) {
             userId = this.props.authorizedUserId
@@ -20,9 +26,27 @@ class ProfileContainer extends Component {
         this.props.getUserStatus(userId)
     }
 
+    componentDidMount() {
+        this.renewalProfile()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.match.params.userId !== this.props.match.params.userId) {
+            this.renewalProfile()
+        }
+
+    }
+
     render() {
         return (
-            <Profile {...this.props} profile={this.props.profile} userStatus={this.props.userStatus} updateUserStatus={this.props.updateUserStatus}/>
+            <Profile {...this.props}
+                     profile={this.props.profile}
+                     userStatus={this.props.userStatus}
+                     updateUserStatus={this.props.updateUserStatus}
+                     saveNewPhoto={this.props.saveNewPhoto}
+                     isOwner={!this.props.match.params.userId}
+                     saveProfileData={this.props.saveProfileData}
+            />
         );
     }
 }
@@ -37,7 +61,7 @@ let mapStateToProps = (state) => ({
 // let withUrlDataNewContainerComponent = withRouter (authRedirect) //return new component with router
 
 export default compose(
-    connect(mapStateToProps, {getProfile, getUserStatus, updateUserStatus}),
+    connect(mapStateToProps, {getProfile, getUserStatus, updateUserStatus, saveNewPhoto, saveProfileData}),
     withRouter,
     withAuthRedirect
 )(ProfileContainer);

@@ -9,12 +9,11 @@ import {Provider} from "react-redux";
 
 
   ReactDOM.render(
-       <BrowserRouter basename={process.env.PUBLIC_URL}>
+       <BrowserRouter basename={process.env.PUBLIC}>
            <Provider store={store}>
                <App />
            </Provider>
        </BrowserRouter>, document.getElementById('root'));
-
 
 // store.subscribe (renderEntireTree);  // state without redux
 

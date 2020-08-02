@@ -10,7 +10,13 @@ class Profile extends Component {
         // }
         return (
             <React.Fragment>
-                <Profile_user_info profile={this.props.profile} userStatus={this.props.userStatus} updateUserStatus={this.props.updateUserStatus}/>
+                <Profile_user_info profile={this.props.profile}
+                                   userStatus={this.props.userStatus}
+                                   updateUserStatus={this.props.updateUserStatus}
+                                   saveNewPhoto={this.props.saveNewPhoto}
+                                   isOwner={!this.props.match.params.userId}
+                                   saveProfileData={this.props.saveProfileData}
+                />
                 <PostsContainer store={this.props.store}/>
             </React.Fragment>
         );

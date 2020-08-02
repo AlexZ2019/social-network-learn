@@ -12,7 +12,7 @@ export const usersAPI = {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`)
             .then(response => {
                 return response.data
-        })
+            })
     },
     getUnfollow(userId) {
         return instance.delete(`follow/${userId}`).then(response => {
@@ -31,21 +31,34 @@ export const AuthAPI = {
         return instance.get(`auth/me`)
     },
     login(email, password, rememberMe = false) {
-          return instance.post('auth/login', {email, password, rememberMe})
+        return instance.post('auth/login', {email, password, rememberMe})
     },
-    logout () {
+    logout() {
         return instance.delete('auth/login')
     }
 }
 
 export const ProfileAPI = {
-    getProfile (userId) {
+    getProfile(userId) {
         return instance.get(`profile/${userId}`)
     },
-    getUserStatus (userId) {
+    getUserStatus(userId) {
         return instance.get(`profile/status/` + userId)
     },
-    updateUserStatus (status) {
+    updateUserStatus(status) {
         return instance.put(`profile/status`, {status})
+    },
+    savePhoto(photoFile) {
+        let formData = new FormData()
+        formData.append("image", photoFile)
+        return instance.put(`profile/photo`, formData, {
+                headers: {
+                    "Content-type": "multipart/form-data"
+                }
+            }
+        )
+    },
+    saveProfile(profileData) {
+        return instance.put(`profile`, profileData)
     }
 }
