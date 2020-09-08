@@ -2,9 +2,8 @@ import React, {useState} from "react";
 import s from "./Profile_user_info.module.css";
 import Preloader from "../../common/Preloader";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
-import defaultAvatar from "../../../default_files/images/user_default_avatar.jpg"
+import defaultAvatar from "../../../default_files/images/user_default_avatar.jpg";
 import ProfileDataFormRedux from "./ProfileDataForm";
-
 
 const Profile_user_info = (props) => {
     let [editMode, setEditMode] = useState(false)
@@ -30,13 +29,17 @@ const Profile_user_info = (props) => {
         <React.Fragment>
             <img src={props.profile.photos.large || defaultAvatar} alt="avatar"/>
             {props.isOwner && <input type="file" onChange={uploadNewPhoto}/>}
-            {editMode ? <ProfileDataFormRedux initialValues={props.profile} profile={props.profile} onSubmit={submitProfileForm}/> :
-                <ProfileData profile={props.profile}
+            {editMode
+                ? <ProfileDataFormRedux initialValues={props.profile}
+                                        profile={props.profile}
+                                        onSubmit={submitProfileForm}/>
+                : <ProfileData profile={props.profile}
                              isOwner={props.isOwner}
                              activateEditMode={() => setEditMode(true)}
                 />}
             {/*<ProfileStatus userStatus={this.props.userStatus} updateUserStatus={this.props.updateUserStatus}/>*/}
-            <ProfileStatusWithHooks userStatus={props.userStatus} updateUserStatus={props.updateUserStatus}/>
+            <ProfileStatusWithHooks userStatus={props.userStatus}
+                                    updateUserStatus={props.updateUserStatus}/>
         </React.Fragment>
     );
 }
@@ -68,6 +71,5 @@ const Contacts = ({contactTitle, contactValue}) => {
         <b>{contactTitle}: </b> {contactValue}
     </div>
 }
-
 
 export default Profile_user_info;

@@ -95,11 +95,17 @@ export const getUserStatus = (userId) => async (dispatch) => {
 // old use with then
 export const updateUserStatus = (status) => {
     return (dispatch) => {
-        ProfileAPI.updateUserStatus(status).then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(setUserStatus(status))
-            }
-        })
+        try {
+            ProfileAPI.updateUserStatus(status).then(response => {
+                if (response.data.resultCode === 0) {
+                    dispatch(setUserStatus(status))
+                }
+            })    
+        }
+        catch (e) {
+
+        }
+        
     }
 }
 
