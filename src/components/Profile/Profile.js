@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import Profile_user_info from "./Profile_user_info/Profile_user_info";
 import PostsContainer from "./Posts/PostsContainer";
-
+import ProfileUserInfo from "./Profile_user_info/Profile_user_info";
 class Profile extends Component {
 
     render() {
@@ -10,7 +9,7 @@ class Profile extends Component {
         // }
         return (
             <React.Fragment>
-                <Profile_user_info profile={this.props.profile}
+                <ProfileUserInfo profile={this.props.profile}
                                    userStatus={this.props.userStatus}
                                    updateUserStatus={this.props.updateUserStatus}
                                    saveNewPhoto={this.props.saveNewPhoto}

@@ -13,7 +13,8 @@ let initialState = {
     captchaUrl: null as string | null  // if null then captcha is not required
 };
 
-const authReducer = (state = initialState, action: action) => {
+export type InitialStateType = typeof initialState
+const authReducer = (state = initialState, action: any) : InitialStateType => {
     switch (action.type) {
         case SET_AUTH_USER_DATA:
         case GET_CAPTCHA_URL_SUCCESS:
@@ -26,21 +27,32 @@ const authReducer = (state = initialState, action: action) => {
     }
 };
 // Action Creators V
-type action = {
-    type: string
-    payload: object
+
+type SetAuthUserDataType = {
+    type: typeof SET_AUTH_USER_DATA,
+    payload: {
+        userId: number | null
+        email: string | null
+        login: string | null
+        isAuth: boolean | null
+    }
 }
-
-
-const setAuthUserData = (userId: number | null, email: string | null, login: string | null, isAuth: boolean) => (
-    {type: SET_AUTH_USER_DATA, payload: {userId, email, login, isAuth}} as action
+const setAuthUserData = (userId: number | null, email: string | null, login: string | null, isAuth: boolean): SetAuthUserDataType => (
+    {
+        type: SET_AUTH_USER_DATA,
+        payload: {userId, email, login, isAuth}
+    }
 )
 
-const getCaptchaUrlSuccess = (captchaUrl: string) => {
+type getCaptchaUrlSuccessType = {
+    type: typeof GET_CAPTCHA_URL_SUCCESS
+    payload: {captchaUrl: string}
+}
+const getCaptchaUrlSuccess = (captchaUrl: string) : getCaptchaUrlSuccessType => {
     return {
         type: GET_CAPTCHA_URL_SUCCESS,
         payload: {captchaUrl}
-    } as action
+    }
 }
 
 export const getAuth = () => async (dispatch: any) => {

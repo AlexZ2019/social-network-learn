@@ -5,7 +5,7 @@ import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import defaultAvatar from "../../../default_files/images/user_default_avatar.jpg";
 import ProfileDataFormRedux from "./ProfileDataForm";
 
-const Profile_user_info = (props) => {
+const ProfileUserInfo = (props) => {
     let [editMode, setEditMode] = useState(false)
 
     if (!props.profile) {
@@ -72,4 +72,4 @@ const Contacts = ({contactTitle, contactValue}) => {
     </div>
 }
 
-export default Profile_user_info;
+export default ProfileUserInfo;
