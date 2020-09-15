@@ -1,15 +1,10 @@
 // const NEW_MESSAGE_BODY = 'NEW_MESSAGE_BODY';
+import {MessageType, UserDialogsType, UserType} from "../Types/types";
+
 const ADD_MESSAGE = 'ADD_MESSAGE';
 
-type UserType = {
-    id: number
-    name: string
-}
 
-type MessageType = {
-    id: number,
-    message: string
-}
+
 let initialState = {
     users_from_server: [
         {id: 1, name: 'user 1'},
@@ -17,7 +12,7 @@ let initialState = {
         {id: 3, name: 'user 3'},
         {id: 4, name: 'user 4'},
         {id: 5, name: 'user 5'}
-    ] as Array<UserType>,
+    ] as Array<UserDialogsType>,
     messages_from_server: [
         {id: 1, message: 'Message 1'},
         {id: 2, message: 'Message 2'},

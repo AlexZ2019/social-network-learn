@@ -15,9 +15,21 @@ import {
     usersFromState,
     // usersFromStateSuperSelector
 } from "../../Redux/selectors/users-selector";
+import {UserType} from "../../Redux/Types/types";
 
+type PropsType = {
+    users_from_server: Array<UserType>
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
+    isFetching: boolean
+    getUsers: any
+    follow: any
+    unfollow: any
+    followingInProgress: Array<number>
+}
 
-class UsersAPI extends React.Component {
+class UsersAPI extends React.Component<PropsType> {
     componentDidMount() {
         this.props.getUsers(this.props.currentPage, this.props.pageSize)
         // this.props.IsFetching(true)
@@ -55,7 +67,7 @@ class UsersAPI extends React.Component {
         //     )
     }
 
-    onPageChanged = (page) => {
+    onPageChanged = (page: number) => {
         this.props.getUsers(page, this.props.pageSize)
     }
 
@@ -69,14 +81,13 @@ class UsersAPI extends React.Component {
                    follow={this.props.follow}
                    unfollow={this.props.unfollow}
                    onPageChanged={this.onPageChanged}
-                   isFollowingProgress={this.props.isFollowingProgress}
                    followingInProgress={this.props.followingInProgress}
             />
         </>
     }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: any) => {
     return {
         // users_from_server: state.users.users_from_server,
         // pageSize: state.users.pageSize,

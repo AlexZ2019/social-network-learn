@@ -1,10 +1,17 @@
-import React from "react";
+import React, {FunctionComponent} from "react";
 import style from "./users.module.css";
 import user_default_avatar from "../../default_files/images/user_default_avatar.jpg";
 import {NavLink} from "react-router-dom";
+import {UserType} from "../../Redux/Types/types";
 
+type PropsType = {
+    user: UserType,
+    followingInProgress: Array<number>,
+    follow: any,
+    unfollow: any
+}
 
-let User = ({user, followingInProgress, follow, unfollow}) => {
+let User: FunctionComponent<PropsType> = ({user, followingInProgress, follow, unfollow}): React.ReactElement => {
     return <React.Fragment>
             <div key={user.id} className={style.user_main}>
                 <span>

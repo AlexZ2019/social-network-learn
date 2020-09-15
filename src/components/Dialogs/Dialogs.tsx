@@ -6,9 +6,16 @@ import {Redirect} from "react-router-dom";
 import {Field, reduxForm} from "redux-form";
 import {Textarea} from "../../utilities/FormsControl/FormsControl";
 import {maxLengthCreator, required} from "../../utilities/validators/validators";
+import {MessageType, UserDialogsType} from "../../Redux/Types/types";
 
+type PropsType = {
+    users: Array<UserDialogsType>
+    messages: Array<MessageType>
+    isAuth: boolean
+    onClickMessage: any
+}
 
-const Dialogs = (props) => {
+const Dialogs = (props: PropsType): React.ReactNode => {
 
     // onChangeMessage = (event) => {
     //     let newMessageBody = event.target.value;
@@ -19,12 +26,12 @@ const Dialogs = (props) => {
     //     this.props.onClickMessage()
     // };
 
-    let addNewMessage = (values) => {
+    let addNewMessage = (values: any) => {
         props.onClickMessage(values.newMessageBody)
     }
     let users = props.users.map(user => <User name={user.name} id={user.id}/>);
     let messages = props.messages.map(message => <Message message={message.message}/>);
-    if (props.auth === false) {
+    if (!props.isAuth) {
         return (<Redirect to={'/login'}/>)
     }
     return (
@@ -42,7 +49,11 @@ const Dialogs = (props) => {
     )
 }
 const maxLength100 = maxLengthCreator(100)
-const AddMessageForm = (props) => {
+
+type AddMessageFormPropsType = {
+    handleSubmit: any
+}
+const AddMessageForm = (props: AddMessageFormPropsType) => {
     return (
         <form onSubmit={props.handleSubmit}>
                 <Field placeholder="Enter your message" name="newMessageBody" component={Textarea} validate={[required, maxLength100]} />

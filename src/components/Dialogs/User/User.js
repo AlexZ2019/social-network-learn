@@ -6,7 +6,7 @@ class User extends Component {
 
     path = '/dialogs/' + this.props.id;
 
-    render(props) {
+    render() {
         return (
             <div className={s.user}>
                 <NavLink to={this.path}>{this.props.name}</NavLink>
