@@ -1,7 +1,12 @@
 import React, {useEffect, useState} from "react";
 // import Preloader from "../../common/Preloader";
 
-const ProfileStatusWithHooks = (props) => {
+type PropsType = {
+    userStatus: string
+    updateUserStatus: (userStatus: string) => void
+}
+
+const ProfileStatusWithHooks: React.FC<PropsType> = (props) => {
     let [editMode, setEditMode] = useState(false)
     let [userStatus, setUserStatus] = useState(props.userStatus)
     useEffect(() => {
@@ -15,7 +20,7 @@ const ProfileStatusWithHooks = (props) => {
         setEditMode(false)
         props.updateUserStatus(userStatus)
     }
-    const onStatusChange = (e) => {
+    const onStatusChange = (e: any) => {
         setUserStatus(e.currentTarget.value)
     }
 

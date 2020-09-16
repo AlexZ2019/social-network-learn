@@ -1,12 +1,12 @@
 import React from "react"
-import s from './Post.module.css'
+// import s from './Post.module.css'
 
 type PropType = {
     message: string
 }
 
 const Post = (props: PropType) => {
-    return <div className={s}>
+    return <div >
             <img src="" alt=""/>
             {props.message}
         </div>

@@ -1,9 +1,17 @@
-import React, {Component} from "react";
+import React, {ChangeEvent, Component} from "react";
 
 // import Preloader from "../../common/Preloader";
 
+type Props = {
+    userStatus: string
+    updateUserStatus: (status: string) => void
+}
 
-class ProfileStatus extends Component {
+type State = {
+    editMode: boolean
+    status: string
+}
+class ProfileStatus extends Component<Props, State> {
     state = {
         editMode: false,
         status: this.props.userStatus
@@ -24,12 +32,12 @@ class ProfileStatus extends Component {
         )
         this.props.updateUserStatus(this.state.status)
     }
-    onStatusChange = (e) => {
+    onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
         this.setState({
             status: e.currentTarget.value
         })
     }
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps: Props, prevState: State) {
         if (prevProps.userStatus !== this.props.userStatus) {
             this.setState({
                 status: this.props.userStatus

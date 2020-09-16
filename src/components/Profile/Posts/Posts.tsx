@@ -4,9 +4,14 @@ import Post from './Post/Post'
 import {Field, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../../utilities/validators/validators";
 import {Textarea} from "../../../utilities/FormsControl/FormsControl";
+import {PostType} from "../../../Redux/Types/types";
 const maxLength10 = maxLengthCreator(10)
 
-const Posts = React.memo(props => {
+type PropsType = {
+    posts: Array<PostType>
+    create_post: any
+}
+const Posts = React.memo((props: PropsType) => {
 
     // new_post = React.createRef();
     // onPostChange = () => {
@@ -14,7 +19,7 @@ const Posts = React.memo(props => {
     //     this.props.onPostChange(new_post_body);
     //     console.log(this.props)
     // };
-    let create_post = (values) => {
+    let create_post = (values: any) => {
         props.create_post(values.addNewPost)
     };
     // shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -28,13 +33,13 @@ const Posts = React.memo(props => {
                     <p>Create a post</p>
                     <AddPostFormRedux onSubmit={create_post}/>
                 </div>
-                <div className={s}>
+                <div>
                     {posts}
                 </div>
             </React.Fragment>
         )
     })
-const AddPostFrom = (props) => {
+const AddPostFrom = (props: any) => {
     return <form onSubmit={props.handleSubmit}>
         <Field component={Textarea} name="addNewPost" validate={[required, maxLength10]} placeholder="Enter post's text"/>
         <button>create post</button>

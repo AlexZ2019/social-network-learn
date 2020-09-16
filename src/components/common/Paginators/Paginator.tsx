@@ -1,10 +1,17 @@
 import React, {useState} from "react";
 import style from "./Pagunator.module.css";
 
+type PropsType = {
+    currentPage: number,
+    totalItemsCount: number,
+    pageSize: number,
+    onPageChanged: (page: number) => void,
+    portion?: number
+}
 
-let Paginator = ({currentPage, totalItemsCount, pageSize, onPageChanged, portion = 10}) => {
+let Paginator: React.FC<PropsType> = ({currentPage, totalItemsCount, pageSize, onPageChanged, portion = 10}) => {
     let pagesCount = Math.ceil(totalItemsCount / pageSize);
-    let pages = [];
+    let pages: Array<number> = [];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i)
     }
@@ -18,8 +25,9 @@ let Paginator = ({currentPage, totalItemsCount, pageSize, onPageChanged, portion
         }
 
         {pages.filter(p => p >= leftPortionPageNumber && p <= rightPortionNumber).map(page => {
+            // className={currentPage === page && style.selectedPage} - in span attributes
             return (
-                <span className={currentPage === page && style.selectedPage}
+                <span
                       onClick={(e) => {
                           onPageChanged(page)
                       }}

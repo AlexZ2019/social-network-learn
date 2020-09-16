@@ -1,5 +1,5 @@
 // const NEW_MESSAGE_BODY = 'NEW_MESSAGE_BODY';
-import {MessageType, UserDialogsType, UserType} from "../Types/types";
+import {MessageType, UserDialogsType} from "../Types/types";
 
 const ADD_MESSAGE = 'ADD_MESSAGE';
 

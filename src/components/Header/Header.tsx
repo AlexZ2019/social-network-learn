@@ -1,8 +1,10 @@
 import React, { Component } from "react"
 import s from './Header.module.css';
 import {NavLink} from "react-router-dom";
+import {PropsType} from "./HeaderContainer";
 
-class Header extends Component {
+
+class Header extends Component<PropsType> {
 
     render() {
         return (

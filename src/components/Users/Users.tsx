@@ -7,14 +7,14 @@ type PropsType = {
     currentPage: number,
     totalUsersCount: number,
     pageSize: number,
-    onPageChanged: any,
+    onPageChanged: (page: number) => void,
     users: Array<UserType>,
-    follow: any,
-    unfollow: any,
+    follow: (userId: number) => void,
+    unfollow: (userId: number) => void,
     followingInProgress: Array<number>
 }
 
-let Users = ({currentPage, totalUsersCount, pageSize, onPageChanged, users, ...props}: PropsType) => {
+let Users: React.FC<PropsType> = ({currentPage, totalUsersCount, pageSize, onPageChanged, users, ...props}) => {
     return <React.Fragment>
         <Paginator currentPage={currentPage} totalItemsCount={totalUsersCount}
                    pageSize={pageSize} onPageChanged={onPageChanged} />

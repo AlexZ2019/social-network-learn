@@ -1,4 +1,4 @@
-import React from "react";
+import React, {FC} from "react";
 import s from './Dialogs.module.css';
 import User from "./User/User";
 import Message from "./Message/Message";
@@ -12,10 +12,10 @@ type PropsType = {
     users: Array<UserDialogsType>
     messages: Array<MessageType>
     isAuth: boolean
-    onClickMessage: any
+    onClickMessage: (values: string) => void
 }
 
-const Dialogs = (props: PropsType): React.ReactNode => {
+const Dialogs: FC<PropsType> = (props) => {
 
     // onChangeMessage = (event) => {
     //     let newMessageBody = event.target.value;

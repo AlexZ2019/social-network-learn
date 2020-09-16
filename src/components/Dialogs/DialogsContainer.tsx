@@ -4,6 +4,8 @@ import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {AddMessageActionCreator} from "../../Redux/Reducers/dialigs-reducer";
+import {AppStateType} from "../../Redux/redux-store";
+import {MessageType, UserDialogsType} from "../../Redux/Types/types";
 
 // class DialogsContainer extends Component {
 //     state = this.props.store.getState().dialogs;
@@ -26,7 +28,18 @@ import {AddMessageActionCreator} from "../../Redux/Reducers/dialigs-reducer";
 //         )
 //     }
 // }
-let mapStateToProps = (state) => {
+
+type MapStateType = {
+    users: Array<UserDialogsType>
+    messages: Array<MessageType>
+    isAuth: boolean
+}
+
+type MapDispatchType = {
+    onClickMessage: (ewMessageBody: string) => void
+}
+
+let mapStateToProps = (state: AppStateType): MapStateType => {
     return {
         users: state.dialogs.users_from_server,
         messages: state.dialogs.messages_from_server,
@@ -35,18 +48,18 @@ let mapStateToProps = (state) => {
     }
 };
 
-let mapDispatchToProps = (dispatch) => {
+let mapDispatchToProps = (dispatch: any): MapDispatchType => {
     return {
         // onChangeMessageBody: (newMessageBody) => {
         //     dispatch(newMessageBodyActionCreator(newMessageBody));
         // },
-        onClickMessage: (newMessageBody) => {
+        onClickMessage: (newMessageBody: string) => {
             dispatch(AddMessageActionCreator(newMessageBody));
         }
     }
 }
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect<MapStateType, MapDispatchType, null, AppStateType>(mapStateToProps, mapDispatchToProps),
     withAuthRedirect
     )(Dialogs);

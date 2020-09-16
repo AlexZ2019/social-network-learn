@@ -11,8 +11,23 @@ import {
 import {withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import {ProfileType} from "../../Redux/Types/types";
 
-class ProfileContainer extends Component {
+export type PropsProfileComponentsType = {
+    match: any
+    authorizedUserId: number
+    history: any
+    getProfile: (userId: number) => void
+    getUserStatus: (userId: number) => void
+    profile: ProfileType
+    isOwner: boolean
+    userStatus: string
+    updateUserStatus: (status: string) => void
+    saveNewPhoto:(file: any) => void
+    saveProfileData: any
+}
+
+class ProfileContainer extends Component <PropsProfileComponentsType> {
 
     renewalProfile () {
         let userId = this.props.match.params.userId;
@@ -30,7 +45,7 @@ class ProfileContainer extends Component {
         this.renewalProfile()
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps: any, prevState: any, snapshot: any) {
         if (prevProps.match.params.userId !== this.props.match.params.userId) {
             this.renewalProfile()
         }
@@ -50,7 +65,7 @@ class ProfileContainer extends Component {
         );
     }
 }
-let mapStateToProps = (state) => ({
+let mapStateToProps = (state: any) => ({
     profile: state.profile.profile,
     userStatus: state.profile.userStatus,
     authorizedUserId: state.auth.userId,
