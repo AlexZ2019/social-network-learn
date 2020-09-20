@@ -22,7 +22,7 @@ let initialState = {
     ] as Array<MessageType>
 };
 type InitialStateType = typeof initialState;
-const dialogsReducer = (state = initialState, action: any): InitialStateType => {
+const dialogsReducer = (state = initialState, action: AddMessageActionCreatorType): InitialStateType => {
             // if (action.type === NEW_MESSAGE_BODY) {
         //
         //     return {

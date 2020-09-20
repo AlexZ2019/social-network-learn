@@ -1,3 +1,7 @@
+import {AppStateType} from "../redux-store";
+import {Dispatch} from "redux";
+import {ThunkAction} from "redux-thunk";
+
 export type PostType = {
     id: number,
     post: string
@@ -47,3 +51,8 @@ export type MessageType = {
     id: number,
     message: string
 }
+
+
+// Thunks and dispatches
+
+export type getStateType = () => AppStateType
