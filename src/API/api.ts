@@ -1,4 +1,5 @@
-import * as axios from "axios";
+import axios from "axios";
+import {ProfileType} from "../Redux/Types/types";
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
@@ -8,30 +9,56 @@ const instance = axios.create({
     }
 })
 export const usersAPI = {
-    getUsers(currentPage = 1, pageSize = 10) {
+    getUsers(currentPage: number = 1, pageSize: number = 10) {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`)
             .then(response => {
                 return response.data
             })
     },
-    getUnfollow(userId) {
+    getUnfollow(userId: number) {
         return instance.delete(`follow/${userId}`).then(response => {
             return response.data
         })
     },
-    getfollow(userId) {
+    getfollow(userId: number) {
         return instance.post(`follow/${userId}`).then(response => {
             return response.data
         })
     }
 }
 
+export enum ResultCodesEnum {
+    Success = 0,
+    Error = 1
+}
+export enum ResultCodeForCaptchaEnum {
+    CaptchaIsRequired = 10
+}
+
+type GetAuthStatusResponseType = {
+    data: {
+        id: number
+        email: string
+        login: string
+    },
+    resultCode: ResultCodesEnum
+    messages: Array<string>
+}
+
+type LoginResponseType = {
+    data: {
+        userId: number
+    },
+    resultCode: ResultCodesEnum | ResultCodeForCaptchaEnum
+    messages: Array<string>
+}
 export const AuthAPI = {
     getAuthStatus() {
-        return instance.get(`auth/me`)
+        return instance.get<GetAuthStatusResponseType>(`auth/me`).then(response => response.data)
     },
-    login(email, password, rememberMe = false, captcha = null) {
-        return instance.post('auth/login', {email, password, rememberMe, captcha})
+    login(email: string, password: string, rememberMe = false, captcha: string | null = null) {
+        return instance.post<LoginResponseType>('auth/login', {email, password, rememberMe, captcha})
+            .then(res => res.data)
     },
     logout() {
         return instance.delete('auth/login')
@@ -39,16 +66,16 @@ export const AuthAPI = {
 }
 
 export const ProfileAPI = {
-    getProfile(userId) {
+    getProfile(userId: number) {
         return instance.get(`profile/${userId}`)
     },
-    getUserStatus(userId) {
+    getUserStatus(userId: number) {
         return instance.get(`profile/status/` + userId)
     },
-    updateUserStatus(status) {
+    updateUserStatus(status: string) {
         return instance.put("profile/status", {status})
     },
-    savePhoto(photoFile) {
+    savePhoto(photoFile: any) {
         let formData = new FormData()
         formData.append("image", photoFile)
         return instance.put("profile/photo", formData, {
@@ -58,7 +85,7 @@ export const ProfileAPI = {
             }
         )
     },
-    saveProfile(profileData) {
+    saveProfile(profileData: ProfileType) {
         return instance.put("profile", profileData)
     }
 }
