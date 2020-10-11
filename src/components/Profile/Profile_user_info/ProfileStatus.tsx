@@ -11,7 +11,7 @@ type State = {
     editMode: boolean
     status: string
 }
-class ProfileStatus extends Component<Props, State> {
+class ProfileStatus extends Component<Props> {
     state = {
         editMode: false,
         status: this.props.userStatus

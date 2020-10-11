@@ -11,9 +11,10 @@ export type ProfileType = {
     userId: number
     lookingForAJob: boolean
     lookingForAJobDescription: string
-    foolName: string
+    fullName: string
     photos: PhotosType
     contacts: ContactsType
+    aboutMe?: string
 }
 
 export type ContactsType = {
@@ -51,6 +52,8 @@ export type MessageType = {
     id: number,
     message: string
 }
+
+
 
 
 // Thunks and dispatches

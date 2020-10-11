@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import style from "./Pagunator.module.css";
+// import style from "./Pagunator.module.css";
 
 type PropsType = {
     currentPage: number,

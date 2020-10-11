@@ -12,6 +12,7 @@ import {withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {ProfileType} from "../../Redux/Types/types";
+import {AppStateType} from "../../Redux/redux-store";
 
 export type PropsProfileComponentsType = {
     match: any
@@ -45,7 +46,7 @@ class ProfileContainer extends Component <PropsProfileComponentsType> {
         this.renewalProfile()
     }
 
-    componentDidUpdate(prevProps: any, prevState: any, snapshot: any) {
+    componentDidUpdate(prevProps: PropsProfileComponentsType, prevState: AppStateType) {
         if (prevProps.match.params.userId !== this.props.match.params.userId) {
             this.renewalProfile()
         }
@@ -65,7 +66,7 @@ class ProfileContainer extends Component <PropsProfileComponentsType> {
         );
     }
 }
-let mapStateToProps = (state: any) => ({
+let mapStateToProps = (state: AppStateType) => ({
     profile: state.profile.profile,
     userStatus: state.profile.userStatus,
     authorizedUserId: state.auth.userId,

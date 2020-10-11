@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 // import Preloader from "../../common/Preloader";
 
 type PropsType = {
@@ -20,7 +20,7 @@ const ProfileStatusWithHooks: React.FC<PropsType> = (props) => {
         setEditMode(false)
         props.updateUserStatus(userStatus)
     }
-    const onStatusChange = (e: any) => {
+    const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
         setUserStatus(e.currentTarget.value)
     }
 

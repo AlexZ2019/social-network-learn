@@ -1,8 +1,9 @@
 import Posts from "./Posts";
 import {connect} from "react-redux";
-import {addPostActionCreator} from "../../../Redux/Reducers/profile-reducer";
+import {addPostActionCreator, AddPostActionCreatorType} from "../../../Redux/Reducers/profile-reducer";
 import {AppStateType} from "../../../Redux/redux-store";
 import {PostType} from "../../../Redux/Types/types";
+import {Dispatch} from "redux";
 
 // class PostsContainer extends Component {
 //     state = this.props.store.getState();
@@ -36,13 +37,13 @@ let mapStateToProps = (state: AppStateType): MapStateType => {
       posts: state.profile.posts_from_server
   }
 };
-let mapDispatchToProps = (dispatch: any): MapDispatchType => {
+let mapDispatchToProps = (dispatch: Dispatch<AddPostActionCreatorType>): MapDispatchType => {
     return {
         create_post: (newPost: string) => {
             dispatch(addPostActionCreator(newPost))
         }
     }
 };
-const  PostsContainer = connect<MapStateType, MapDispatchType, null, AppStateType> (mapStateToProps, mapDispatchToProps)(Posts);
+const  PostsContainer = connect<MapStateType, MapDispatchType, unknown, AppStateType> (mapStateToProps, mapDispatchToProps)(Posts);
 
 export default PostsContainer

@@ -3,7 +3,7 @@ import s from './Dialogs.module.css';
 import User from "./User/User";
 import Message from "./Message/Message";
 import {Redirect} from "react-router-dom";
-import {Field, reduxForm} from "redux-form";
+import {Field, reduxForm, WrappedReduxFormContext} from "redux-form";
 import {Textarea} from "../../utilities/FormsControl/FormsControl";
 import {maxLengthCreator, required} from "../../utilities/validators/validators";
 import {MessageType, UserDialogsType} from "../../Redux/Types/types";
@@ -13,6 +13,9 @@ type PropsType = {
     messages: Array<MessageType>
     isAuth: boolean
     onClickMessage: (values: string) => void
+}
+type ReduxFormTakenValues = {
+    newMessageBody: string
 }
 
 const Dialogs: FC<PropsType> = (props) => {
@@ -26,7 +29,7 @@ const Dialogs: FC<PropsType> = (props) => {
     //     this.props.onClickMessage()
     // };
 
-    let addNewMessage = (values: any) => {
+    let addNewMessage = (values: any): void => {
         props.onClickMessage(values.newMessageBody)
     }
     let users = props.users.map(user => <User name={user.name} id={user.id}/>);

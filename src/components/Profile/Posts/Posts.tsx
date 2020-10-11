@@ -1,4 +1,4 @@
-import React from "react"
+import React, {FC, MemoExoticComponent} from "react"
 import s from './Posts.module.css'
 import Post from './Post/Post'
 import {Field, reduxForm} from "redux-form";
@@ -9,9 +9,9 @@ const maxLength10 = maxLengthCreator(10)
 
 type PropsType = {
     posts: Array<PostType>
-    create_post: any
+    create_post: (values: any) => void
 }
-const Posts = React.memo((props: PropsType) => {
+const Posts: MemoExoticComponent<FC<PropsType>> = React.memo((props: PropsType) => {
 
     // new_post = React.createRef();
     // onPostChange = () => {

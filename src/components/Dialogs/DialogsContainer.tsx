@@ -2,8 +2,8 @@
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {compose} from "redux";
-import {AddMessageActionCreator} from "../../Redux/Reducers/dialigs-reducer";
+import {compose, Dispatch} from "redux";
+import {AddMessageActionCreator, AddMessageActionCreatorType} from "../../Redux/Reducers/dialigs-reducer";
 import {AppStateType} from "../../Redux/redux-store";
 import {MessageType, UserDialogsType} from "../../Redux/Types/types";
 
@@ -48,7 +48,7 @@ let mapStateToProps = (state: AppStateType): MapStateType => {
     }
 };
 
-let mapDispatchToProps = (dispatch: any): MapDispatchType => {
+let mapDispatchToProps = (dispatch: Dispatch<AddMessageActionCreatorType>): MapDispatchType => {
     return {
         // onChangeMessageBody: (newMessageBody) => {
         //     dispatch(newMessageBodyActionCreator(newMessageBody));

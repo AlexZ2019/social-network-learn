@@ -52,6 +52,9 @@ type LoginResponseType = {
     resultCode: ResultCodesEnum | ResultCodeForCaptchaEnum
     messages: Array<string>
 }
+type GetCaptchaType = {
+    url: string
+}
 export const AuthAPI = {
     getAuthStatus() {
         return instance.get<GetAuthStatusResponseType>(`auth/me`).then(response => response.data)
@@ -67,10 +70,10 @@ export const AuthAPI = {
 
 export const ProfileAPI = {
     getProfile(userId: number) {
-        return instance.get(`profile/${userId}`)
+        return instance.get<ProfileType>(`profile/${userId}`)
     },
     getUserStatus(userId: number) {
-        return instance.get(`profile/status/` + userId)
+        return instance.get<string>(`profile/status/` + userId)
     },
     updateUserStatus(status: string) {
         return instance.put("profile/status", {status})
@@ -92,6 +95,6 @@ export const ProfileAPI = {
 
 export const SecurityAPI = {
     getCaptchaUrl() {
-        return instance.get("security/get-captcha-url")
+        return instance.get<GetCaptchaType>("security/get-captcha-url")
     }
 }

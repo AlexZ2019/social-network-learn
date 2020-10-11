@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import PostsContainer from "./Posts/PostsContainer";
 import ProfileUserInfo from "./Profile_user_info/Profile_user_info";
 import {ProfileType} from "../../Redux/Types/types";
+import PostsContainer from "./Posts/PostsContainer";
 
 type PropsType = {
     profile: ProfileType
@@ -19,6 +19,7 @@ class Profile extends Component <PropsType> {
         // if (!this.props.profile) {
         //     return <Preloader/>
         // }
+
         return (
             <React.Fragment>
                 <ProfileUserInfo profile={this.props.profile}
