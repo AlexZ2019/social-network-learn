@@ -1,9 +1,6 @@
 // const NEW_MESSAGE_BODY = 'NEW_MESSAGE_BODY';
 import {MessageType, UserDialogsType} from "../Types/types";
-
-const ADD_MESSAGE = 'ADD_MESSAGE';
-
-
+import {InferActionsTypes} from "../redux-store";
 
 let initialState = {
     users_from_server: [
@@ -22,7 +19,7 @@ let initialState = {
     ] as Array<MessageType>
 };
 type InitialStateType = typeof initialState;
-const dialogsReducer = (state = initialState, action: AddMessageActionCreatorType): InitialStateType => {
+const dialogsReducer = (state = initialState, action: Actions): InitialStateType => {
             // if (action.type === NEW_MESSAGE_BODY) {
         //
         //     return {
@@ -30,7 +27,7 @@ const dialogsReducer = (state = initialState, action: AddMessageActionCreatorTyp
         //     newMessageBodyState: action.newMessageBody
         //     }
         // } else
-            if (action.type === ADD_MESSAGE) {
+            if (action.type === "DIALOGS_REDUCER_ADD_MESSAGE") {
             let newMessage = action.newMessageBody
             return {
                 ...state,
@@ -46,15 +43,15 @@ const dialogsReducer = (state = initialState, action: AddMessageActionCreatorTyp
 //         newMessageBody: newMessageBody
 //     }
 // };
+export type Actions = InferActionsTypes<typeof actions>
 
-export type AddMessageActionCreatorType = {
-    type: typeof ADD_MESSAGE
-    newMessageBody: string
-}
-export const AddMessageActionCreator = (newMessageBody: string): AddMessageActionCreatorType => {
-    return {
-        type: ADD_MESSAGE,
-        newMessageBody
+export const actions = {
+    AddMessageActionCreator: (newMessageBody: string) => {
+        return {
+            type: "DIALOGS_REDUCER_ADD_MESSAGE",
+            newMessageBody
+        } as const
     }
 }
+
 export default dialogsReducer;

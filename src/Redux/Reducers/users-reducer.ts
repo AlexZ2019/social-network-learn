@@ -1,9 +1,8 @@
-import {usersAPI} from "../../API/api";
 import {updateObjectInArray} from "../../utilities/object-helpers";
-import {getStateType, UserType} from "../Types/types";
+import {UserType} from "../Types/types";
 import {Dispatch} from "redux";
-import {AppStateType, InferActionsTypes} from "../redux-store";
-import {ThunkAction} from "redux-thunk";
+import {InferActionsTypes, BaseThunkType} from "../redux-store";
+import {usersAPI} from "../../API/users-api";
 
 let initialState = {
     users_from_server: [] as Array<UserType>,
@@ -104,11 +103,11 @@ export const actions = {
     )
 }
 
-export type MyDispatch = Dispatch<Actions>
-export type Thunk = ThunkAction<Promise<void>, AppStateType, unknown, Actions>
+// export type Thunk = ThunkAction<Promise<void>, AppStateType, unknown, Actions>
+type Thunk = BaseThunkType<Actions>
 
 export const getUsers = (currentPage: number, pageSize: number): Thunk => {
-    return async (dispatch: MyDispatch, getState: getStateType) => {
+    return async (dispatch) => {
         dispatch(actions.IsFetching(true));
         let data = await usersAPI.getUsers(currentPage, pageSize);
         dispatch(actions.IsFetching(false));
@@ -118,7 +117,7 @@ export const getUsers = (currentPage: number, pageSize: number): Thunk => {
     }
 }
 
-const _followUnfollowFlow = async (dispatch: MyDispatch, userId: number, apiMethod: any, actionCreator: (userId: number) => Actions) => {
+const _followUnfollowFlow = async (dispatch: Dispatch<Actions>, userId: number, apiMethod: any, actionCreator: (userId: number) => Actions) => {
     // old func without refactoring
     // return async (dispatch) => {
     //     dispatch(isFollowingProgress(true, userId))

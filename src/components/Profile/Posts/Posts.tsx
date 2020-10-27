@@ -1,7 +1,7 @@
 import React, {FC, MemoExoticComponent} from "react"
 import s from './Posts.module.css'
 import Post from './Post/Post'
-import {Field, reduxForm} from "redux-form";
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../../utilities/validators/validators";
 import {Textarea} from "../../../utilities/FormsControl/FormsControl";
 import {PostType} from "../../../Redux/Types/types";
@@ -39,7 +39,7 @@ const Posts: MemoExoticComponent<FC<PropsType>> = React.memo((props: PropsType) 
             </React.Fragment>
         )
     })
-const AddPostFrom = (props: any) => {
+const AddPostFrom: React.FC<InjectedFormProps> = (props) => {
     return <form onSubmit={props.handleSubmit}>
         <Field component={Textarea} name="addNewPost" validate={[required, maxLength10]} placeholder="Enter post's text"/>
         <button>create post</button>

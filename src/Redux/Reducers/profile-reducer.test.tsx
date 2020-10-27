@@ -1,5 +1,6 @@
-import profileReducer, {addPostActionCreator, deletePost} from "./profile-reducer";
+import profileReducer, {actions} from "./profile-reducer";
 import React from "react";
+import {ProfileType} from "../Types/types";
 
 let state = {
     posts_from_server: [
@@ -21,12 +22,15 @@ let state = {
         {id: 7,post: 'message 7'},
         {id: 8,post: 'message 8'},
         {id: 9,post: 'message 9'},
-    ]
+    ],
+    newPostText: '',
+    profile: null as ProfileType | null,
+    userStatus: ''
 };
 
 test ('message of new post should be corrected', () => {
     // test data
-    let action = addPostActionCreator("Test_post")
+    let action = actions.addPostActionCreator("Test_post")
     // action
     let newState = profileReducer(state, action)
     // expectation
@@ -36,7 +40,7 @@ test ('message of new post should be corrected', () => {
 
 test ('deleting posts', () => {
     // test data
-    let action = deletePost(1)
+    let action = actions.deletePost(1)
     // action
     let newState = profileReducer(state, action)
     // expectation
@@ -45,7 +49,7 @@ test ('deleting posts', () => {
 
 test ('not delete post id if accepted id by a reducer is absent in posts', () => {
     // test data
-    let action = deletePost(1000)
+    let action = actions.deletePost(1000)
     // action
     let newState = profileReducer(state, action)
     // expectation

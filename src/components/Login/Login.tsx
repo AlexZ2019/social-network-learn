@@ -60,7 +60,6 @@ type mapDispatchToProps = {
     login: (email: string, password: string, rememberMe: boolean, captcha: string | null) => void
 }
 
-
 const Login: React.FC<mapStateToProps & mapDispatchToProps> = (props) => {
 
     if (props.isAuth) {

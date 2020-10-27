@@ -1,10 +1,11 @@
 
 import React from "react";
-import {reduxForm} from "redux-form";
+import {InjectedFormProps, reduxForm} from "redux-form";
 import {createField, Input, Textarea} from "../../../utilities/FormsControl/FormsControl";
 import s from '../../../utilities/FormsControl/FormsControl.module.css'
+import {ProfileType} from "../../../Redux/Types/types";
 
-const ProfileDataForm = ({handleSubmit, profile, error}) => {
+const ProfileDataForm: React.FC<InjectedFormProps> = ({handleSubmit, error}, profile: ProfileType) => {
     return <form className={s.info} onSubmit={handleSubmit}>
         <div>
             <button>Save</button>
