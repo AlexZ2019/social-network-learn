@@ -22,6 +22,10 @@ type Props = ReturnType<typeof mapStateToProps>
 type DispatchPropsType = {
     initializeApp: () => void
 }
+
+const SuspendedProfile = withSuspense(ProfileContainer);
+const SuspendedDialogs = withSuspense(DialogsContainer);
+
 class App extends React.Component<Props & DispatchPropsType> {
 
     catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
@@ -49,10 +53,10 @@ class App extends React.Component<Props & DispatchPropsType> {
                            render={() => <Redirect to={"/profile"}/>}
                     />
                     <Route path='/profile/:userId?'
-                           render={withSuspense(ProfileContainer)}
+                           render={() => <SuspendedProfile/>}
                     />
                     <Route path='/dialogs'
-                           render={withSuspense(DialogsContainer)}
+                           render={() => <SuspendedDialogs/>}
                     />
                     <Route path='/users'
                            render={() =>
