@@ -12,14 +12,19 @@ import {compose} from "redux";
 import Preloader from "./components/common/Preloader";
 import {initializeApp} from "./Redux/Reducers/app-reducer";
 import {withSuspense} from "./hoc/withSuspense";
-import Switch from "react-router-dom/es/Switch";
+// import Switch from "react-router-dom/es/Switch";
+import {AppStateType} from "./Redux/redux-store";
 
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 
-class App extends React.Component {
+type Props = ReturnType<typeof mapStateToProps>
+type DispatchPropsType = {
+    initializeApp: () => void
+}
+class App extends React.Component<Props & DispatchPropsType> {
 
-    catchAllUnhandledErrors = (reason, promise) => {
+    catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
 
 }
     componentDidMount() {
@@ -39,7 +44,7 @@ class App extends React.Component {
             <div className="App">
                 <HeaderContainer/>
                 <Menu/>
-                <Switch>
+                {/*<Switch>*/}
                     <Route exact path='/'
                            render={() => <Redirect to={"/profile"}/>}
                     />
@@ -68,13 +73,13 @@ class App extends React.Component {
                                <div>404 not found</div>
                            }
                     />
-                </Switch>
+                {/*</Switch>*/}
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType) => ({
     initialized: state.app.initialized
 })
 

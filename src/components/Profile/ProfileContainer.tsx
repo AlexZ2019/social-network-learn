@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, ComponentType} from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
 import {
@@ -76,7 +76,7 @@ let mapStateToProps = (state: AppStateType) => ({
 
 // let withUrlDataNewContainerComponent = withRouter (authRedirect) //return new component with router
 
-export default compose(
+export default compose<ComponentType>(
     connect(mapStateToProps, {getProfile, getUserStatus, updateUserStatus, saveNewPhoto, saveProfileData}),
     withRouter,
     withAuthRedirect

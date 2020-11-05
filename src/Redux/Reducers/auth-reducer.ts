@@ -63,7 +63,7 @@ type ThunkType = BaseThunkType<Actions | FormAction>
 export const getAuth = (): ThunkType => async (dispatch) => {
     let data = await AuthAPI.getAuthStatus()
     if (data.resultCode === ResultCodesEnum.Success) {
-        let {id, email, login} = data.data.data;
+        let {id, email, login}: any = data.data; // TEMPORARY
         dispatch(Actions.setAuthUserData(id, email, login, true))
     }
 }

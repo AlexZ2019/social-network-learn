@@ -148,5 +148,5 @@ let mapStateToProps = (state: AppStateType) => {
 // export default withAuthRedirect (connect(mapStateToProps, {follow, unfollow, currentPage, isFollowingProgress, getUsers})(UsersAPI));
 
 export default compose(
-    connect<MapStatePropsType, MapDispatchPropsType, null, AppStateType>(mapStateToProps, {follow, unfollow, getUsers}),
+    connect<MapStatePropsType, MapDispatchPropsType, unknown, AppStateType>(mapStateToProps, {follow, unfollow, getUsers}),
 )(UsersAPI)

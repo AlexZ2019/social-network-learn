@@ -6,6 +6,7 @@ import {compose, Dispatch} from "redux";
 import {Actions, actions} from "../../Redux/Reducers/dialigs-reducer";
 import {AppStateType} from "../../Redux/redux-store";
 import {MessageType, UserDialogsType} from "../../Redux/Types/types";
+import {ComponentType} from "react";
 
 // class DialogsContainer extends Component {
 //     state = this.props.store.getState().dialogs;
@@ -59,7 +60,7 @@ let mapDispatchToProps = (dispatch: Dispatch<Actions>): MapDispatchType => {
     }
 }
 
-export default compose(
+export default compose<ComponentType>(
     connect<MapStateType, MapDispatchType, null, AppStateType>(mapStateToProps, mapDispatchToProps),
     withAuthRedirect
     )(Dialogs);

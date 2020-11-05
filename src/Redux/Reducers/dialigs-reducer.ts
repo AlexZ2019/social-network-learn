@@ -18,7 +18,7 @@ let initialState = {
         {id: 5, message: 'Message 5'},
     ] as Array<MessageType>
 };
-type InitialStateType = typeof initialState;
+export type InitialStateType = typeof initialState;
 const dialogsReducer = (state = initialState, action: Actions): InitialStateType => {
             // if (action.type === NEW_MESSAGE_BODY) {
         //
