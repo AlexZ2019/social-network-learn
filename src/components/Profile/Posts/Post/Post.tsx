@@ -5,7 +5,7 @@ type PropType = {
     message: string
 }
 
-const Post = (props: PropType) => {
+const Post: React.FC<PropType> = (props) => {
     return <div >
             <img src="" alt=""/>
             {props.message}

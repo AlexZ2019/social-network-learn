@@ -1,17 +1,19 @@
-import React, {FC, MemoExoticComponent} from "react"
+import React from "react"
 import s from './Posts.module.css'
 import Post from './Post/Post'
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../../utilities/validators/validators";
-import {Textarea} from "../../../utilities/FormsControl/FormsControl";
+import {createField, GetStringKeys, Textarea} from "../../../utilities/FormsControl/FormsControl";
 import {PostType} from "../../../Redux/Types/types";
 const maxLength10 = maxLengthCreator(10)
 
-type PropsType = {
+type MapPropsType = {
     posts: Array<PostType>
-    create_post: (values: any) => void
 }
-const Posts: MemoExoticComponent<FC<PropsType>> = React.memo((props: PropsType) => {
+type DispatchPropsType = {
+    create_post: (values: string) => void
+}
+const Posts: React.FC<MapPropsType & DispatchPropsType> = React.memo((props) => {
 
     // new_post = React.createRef();
     // onPostChange = () => {
@@ -19,7 +21,7 @@ const Posts: MemoExoticComponent<FC<PropsType>> = React.memo((props: PropsType) 
     //     this.props.onPostChange(new_post_body);
     //     console.log(this.props)
     // };
-    let create_post = (values: any) => {
+    let create_post = (values: Add_Post_Values_Form) => {
         props.create_post(values.addNewPost)
     };
     // shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -39,11 +41,16 @@ const Posts: MemoExoticComponent<FC<PropsType>> = React.memo((props: PropsType) 
             </React.Fragment>
         )
     })
-const AddPostFrom: React.FC<InjectedFormProps> = (props) => {
+
+type Add_Post_Values_Form = {
+    addNewPost: string
+}
+type Add_POST_VALUES_FORM_KEYS = GetStringKeys<Add_Post_Values_Form>
+const AddPostFrom: React.FC<InjectedFormProps<Add_Post_Values_Form>> = (props) => {
     return <form onSubmit={props.handleSubmit}>
-        <Field component={Textarea} name="addNewPost" validate={[required, maxLength10]} placeholder="Enter post's text"/>
+        {createField<Add_POST_VALUES_FORM_KEYS>("Enter post's text", "addNewPost", [required, maxLength10], Textarea)}
         <button>create post</button>
     </form>
 }
-const AddPostFormRedux = reduxForm ({form: "addPost"})(AddPostFrom)
+const AddPostFormRedux = reduxForm<Add_Post_Values_Form> ({form: "addPost"})(AddPostFrom)
 export default Posts

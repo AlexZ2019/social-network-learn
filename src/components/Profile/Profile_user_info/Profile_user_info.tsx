@@ -4,12 +4,13 @@ import Preloader from "../../common/Preloader";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import defaultAvatar from "../../../default_files/images/user_default_avatar.jpg";
 import ProfileDataFormRedux from "./ProfileDataForm";
-import {ProfileType} from "../../../Redux/Types/types";
+import {ContactsType, ProfileType} from "../../../Redux/Types/types";
+import {GetStringKeys} from "../../../utilities/FormsControl/FormsControl";
 
 type Profile_user_info = {
-    profile: ProfileType
-    saveNewPhoto: (formData: any) => void
-    saveProfileData: (formData: any) => Promise<void>
+    profile: ProfileType | null
+    saveNewPhoto: (file: File) => void
+    saveProfileData: (formData: ProfileType) => Promise<void>
     isOwner: boolean
     userStatus: string
     updateUserStatus: (status: string) => void
@@ -22,19 +23,19 @@ const ProfileUserInfo: FC<Profile_user_info> = (props) => {
         return <Preloader/>
     }
 
-    const uploadNewPhoto = (e: ChangeEvent<any>) => {
-        if (e.target.files.length) {
+    const uploadNewPhoto = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length) {
             props.saveNewPhoto(e.target.files[0])
         }
     }
 
-    const submitProfileForm = (formData: any) => {
+    const submitProfileForm = (formData: ProfileType) => {
+        // todo: remove then
         props.saveProfileData(formData).then(() => {
             setEditMode(false)
             }
         )
     }
-
 
     return (
         <React.Fragment>
@@ -42,7 +43,6 @@ const ProfileUserInfo: FC<Profile_user_info> = (props) => {
             {props.isOwner && <input type="file" onChange={uploadNewPhoto}/>}
             {editMode
                 ? <ProfileDataFormRedux initialValues={props.profile}
-                    // @ts-ignore
                                         profile={props.profile}
                                         onSubmit={submitProfileForm}/>
                 : <ProfileData profile={props.profile}
@@ -61,7 +61,8 @@ type ProfileData = {
     isOwner: boolean
     activateEditMode: () => void
 }
-const ProfileData = ({profile, isOwner, activateEditMode}: ProfileData) => {
+
+const ProfileData: React.FC<ProfileData> = ({profile, isOwner, activateEditMode}) => {
     return <div className={s.info}>
         {isOwner && <div><button onClick={activateEditMode}>Edit profile</button></div>}
         <div>
@@ -78,13 +79,18 @@ const ProfileData = ({profile, isOwner, activateEditMode}: ProfileData) => {
         </div>
         <div>
             <b>Contacts </b> {Object.keys(profile.contacts).map(key => {
-            // @ts-ignore
-            return <Contacts key={key} contactTitle={key} contactValue={profile.contacts[key]}/>
+            return <Contacts key={key} contactTitle={key} contactValue={profile.contacts[key as keyof ContactsType]}/>
         })}
         </div>
     </div>
 }
-const Contacts = ({contactTitle, contactValue}: any) => {
+
+type ContactsPropsType = {
+    contactTitle: string
+    contactValue: string
+}
+
+const Contacts: React.FC<ContactsPropsType> = ({contactTitle, contactValue}) => {
     return <div>
         <b>{contactTitle}: </b> {contactValue}
     </div>

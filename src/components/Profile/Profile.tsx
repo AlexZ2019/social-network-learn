@@ -3,14 +3,23 @@ import ProfileUserInfo from "./Profile_user_info/Profile_user_info";
 import {ProfileType} from "../../Redux/Types/types";
 import PostsContainer from "./Posts/PostsContainer";
 
+// type PropsType = {
+//     profile: ProfileType
+//     isOwner: boolean
+//     userStatus: string
+//     match: any
+//     saveNewPhoto:(file: any) => void
+//     updateUserStatus: (status: string) => void
+//     saveProfileData: any
+// }
+
 type PropsType = {
-    profile: ProfileType
+    profile: ProfileType | null
+    saveNewPhoto: (file: File) => void
+    saveProfileData: (formData: ProfileType) => Promise<void>
     isOwner: boolean
     userStatus: string
-    match: any
-    saveNewPhoto:(file: any) => void
     updateUserStatus: (status: string) => void
-    saveProfileData: any
 }
 
 class Profile extends Component <PropsType> {
@@ -26,7 +35,7 @@ class Profile extends Component <PropsType> {
                                  userStatus={this.props.userStatus}
                                  updateUserStatus={this.props.updateUserStatus}
                                  saveNewPhoto={this.props.saveNewPhoto}
-                                 isOwner={!this.props.match.params.userId}
+                                 isOwner={this.props.isOwner}
                                  saveProfileData={this.props.saveProfileData}
                 />
                 <PostsContainer/>

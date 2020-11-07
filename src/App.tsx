@@ -72,11 +72,11 @@ class App extends React.Component<Props & DispatchPropsType> {
                                <Login/>
                            }
                     />
-                    <Route path='*'
-                           render={() =>
-                               <div>404 not found</div>
-                           }
-                    />
+                    {/*<Route path='*'*/}
+                    {/*       render={() =>*/}
+                    {/*           <div>404 not found</div>*/}
+                    {/*       }*/}
+                    {/*/>*/}
                 {/*</Switch>*/}
             </div>
         );
