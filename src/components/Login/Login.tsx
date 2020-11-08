@@ -5,7 +5,7 @@ import {required} from "../../utilities/validators/validators";
 import {connect} from "react-redux";
 import {login, logout} from "../../Redux/Reducers/auth-reducer";
 import {Redirect} from "react-router-dom";
-import s from '../../utilities/FormsControl/FormsControl.module.css'
+import s from '../../utilities/FormsControl/FormsControl.module.css';
 import {AppStateType} from "../../Redux/redux-store";
 
 type loginFormOwnProps = {

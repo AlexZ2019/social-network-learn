@@ -2,8 +2,7 @@ import React, {FC} from "react";
 import s from './Dialogs.module.css';
 import User from "./User/User";
 import Message from "./Message/Message";
-import {Redirect} from "react-router-dom";
-import {Field, InjectedFormProps, reduxForm, WrappedReduxFormContext} from "redux-form";
+import {InjectedFormProps, reduxForm} from "redux-form";
 import {createField, Textarea} from "../../utilities/FormsControl/FormsControl";
 import {maxLengthCreator, required} from "../../utilities/validators/validators";
 import {MessageType, UserDialogsType} from "../../Redux/Types/types";
@@ -31,9 +30,9 @@ const Dialogs: FC<PropsType> = (props) => {
     }
     let users = props.users.map(user => <User name={user.name} id={user.id}/>);
     let messages = props.messages.map(message => <Message message={message.message}/>);
-    if (!props.isAuth) {
-        return (<Redirect to={'/login'}/>)
-    }
+    // if (!props.isAuth) {
+    //     return (<Redirect to={'/login'}/>)
+    // }
     return (
         <div>
             <div className={s.dialogs}>

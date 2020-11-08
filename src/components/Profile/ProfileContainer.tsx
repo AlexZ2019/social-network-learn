@@ -63,7 +63,8 @@ class ProfileContainer extends Component<PropsType> {
         this.renewalProfile()
     }
 
-    componentDidUpdate(prevProps: PropsType, prevState: AppStateType) {
+    componentDidUpdate(prevProps: PropsType, prevState: PropsType) {
+        debugger
         if (prevProps.match.params.userId !== this.props.match.params.userId) {
             this.renewalProfile()
         }

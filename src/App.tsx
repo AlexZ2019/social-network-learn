@@ -1,10 +1,8 @@
-import React from 'react';
+import React, {ComponentType} from 'react';
 import './App.css';
 import Menu from "./components/Menu/Menu";
-import {Redirect, Route, withRouter} from "react-router-dom";
-// import DialogsContaine r from "./components/Dialogs/DialogsContainer";
+import {Redirect, Route, withRouter, Switch} from "react-router-dom";
 import UsersContainer from "./components/Users/UsersContainer";
-// import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
 import {connect} from "react-redux";
@@ -12,7 +10,6 @@ import {compose} from "redux";
 import Preloader from "./components/common/Preloader";
 import {initializeApp} from "./Redux/Reducers/app-reducer";
 import {withSuspense} from "./hoc/withSuspense";
-// import Switch from "react-router-dom/es/Switch";
 import {AppStateType} from "./Redux/redux-store";
 
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
@@ -48,7 +45,7 @@ class App extends React.Component<Props & DispatchPropsType> {
             <div className="App">
                 <HeaderContainer/>
                 <Menu/>
-                {/*<Switch>*/}
+                <Switch>
                     <Route exact path='/'
                            render={() => <Redirect to={"/profile"}/>}
                     />
@@ -72,12 +69,12 @@ class App extends React.Component<Props & DispatchPropsType> {
                                <Login/>
                            }
                     />
-                    {/*<Route path='*'*/}
-                    {/*       render={() =>*/}
-                    {/*           <div>404 not found</div>*/}
-                    {/*       }*/}
-                    {/*/>*/}
-                {/*</Switch>*/}
+                    <Route path='*'
+                           render={() =>
+                               <div>404 not found</div>
+                           }
+                    />
+                </Switch>
             </div>
         );
     }
@@ -87,7 +84,7 @@ const mapStateToProps = (state: AppStateType) => ({
     initialized: state.app.initialized
 })
 
-export default compose(
+export default compose<ComponentType>(
     withRouter,
     connect(mapStateToProps, {initializeApp}))
 (App);

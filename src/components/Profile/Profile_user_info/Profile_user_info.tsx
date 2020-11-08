@@ -5,7 +5,6 @@ import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import defaultAvatar from "../../../default_files/images/user_default_avatar.jpg";
 import ProfileDataFormRedux from "./ProfileDataForm";
 import {ContactsType, ProfileType} from "../../../Redux/Types/types";
-import {GetStringKeys} from "../../../utilities/FormsControl/FormsControl";
 
 type Profile_user_info = {
     profile: ProfileType | null

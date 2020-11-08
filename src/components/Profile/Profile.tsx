@@ -28,7 +28,6 @@ class Profile extends Component <PropsType> {
         // if (!this.props.profile) {
         //     return <Preloader/>
         // }
-
         return (
             <React.Fragment>
                 <ProfileUserInfo profile={this.props.profile}

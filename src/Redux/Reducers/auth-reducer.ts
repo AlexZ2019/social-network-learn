@@ -61,6 +61,7 @@ const Actions = {
 // type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, Actions>
 type ThunkType = BaseThunkType<Actions | FormAction>
 export const getAuth = (): ThunkType => async (dispatch) => {
+
     let data = await AuthAPI.getAuthStatus()
     if (data.resultCode === ResultCodesEnum.Success) {
         let {id, email, login}: any = data.data; // TEMPORARY

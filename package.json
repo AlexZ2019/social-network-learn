@@ -4,13 +4,6 @@
   "private": true,
   "homepage": "https://alexz2019.github.io/social-network-learn/",
   "dependencies": {
-    "axios": "^0.19.2",
-    "react-redux": "^7.2.0",
-    "react-router-dom": "^5.1.2",
-    "redux": "^4.0.5",
-    "redux-form": "^8.3.6",
-    "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -18,9 +11,16 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.3",
+    "redux": "^4.0.5",
+    "redux-form": "^8.3.6",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "typescript": "~3.7.2"
   },
   "scripts": {
@@ -49,6 +49,7 @@
   "devDependencies": {
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
+    "@types/react-test-renderer": "^16.9.3",
     "@types/redux-form": "^8.3.0",
     "gh-pages": "^3.1.0",
     "react-test-renderer": "^16.12.0"
