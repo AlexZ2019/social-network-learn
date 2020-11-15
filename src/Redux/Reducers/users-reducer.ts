@@ -3,6 +3,7 @@ import {UserType} from "../Types/types";
 import {Dispatch} from "redux";
 import {InferActionsTypes, BaseThunkType} from "../redux-store";
 import {usersAPI} from "../../API/users-api";
+import {APIResponseType} from "../../API/api";
 
 let initialState = {
     users_from_server: [] as Array<UserType>,
@@ -117,7 +118,7 @@ export const getUsers = (currentPage: number, pageSize: number): Thunk => {
     }
 }
 
-const _followUnfollowFlow = async (dispatch: Dispatch<Actions>, userId: number, apiMethod: any, actionCreator: (userId: number) => Actions) => {
+const _followUnfollowFlow = async (dispatch: Dispatch<Actions>, userId: number, apiMethod: (userId: number) => Promise<APIResponseType>, actionCreator: (userId: number) => Actions) => {
     // old func without refactoring
     // return async (dispatch) => {
     //     dispatch(isFollowingProgress(true, userId))
