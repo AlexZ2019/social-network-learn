@@ -117,7 +117,16 @@ export const getUsers = (currentPage: number, pageSize: number): Thunk => {
         dispatch(actions.setCurrentPage(currentPage));
     }
 }
-
+export const getSearchingUsers = (currentPage: number, pageSize: number, find: string): Thunk => {
+    return async (dispatch) => {
+        dispatch(actions.IsFetching(true));
+        let data = await usersAPI.searchUsers(currentPage, pageSize, find)
+        dispatch(actions.IsFetching(false));
+        dispatch(actions.setUsersFromServer(data.items));
+        dispatch(actions.setTotalUsersCount(data.totalCount));
+        dispatch(actions.setCurrentPage(currentPage));
+    }
+}
 const _followUnfollowFlow = async (dispatch: Dispatch<Actions>, userId: number, apiMethod: (userId: number) => Promise<APIResponseType>, actionCreator: (userId: number) => Actions) => {
     // old func without refactoring
     // return async (dispatch) => {

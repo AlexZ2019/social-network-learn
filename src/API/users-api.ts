@@ -7,6 +7,12 @@ export const usersAPI = {
                 return response.data
             })
     },
+    searchUsers(currentPage: number = 1, pageSize: number = 10, find: string = "") {
+        return instance.get<GetItemsType>(`users?page=${currentPage}&count=${pageSize}&term=${find}`)
+            .then(response => {
+                return response.data
+            })
+    },
     getUnfollow(userId: number) {
         return instance.delete(`follow/${userId}`).then(response => {
             return response.data

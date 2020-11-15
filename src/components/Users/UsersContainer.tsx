@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import {
-    follow, getUsers, unfollow
+    follow, getSearchingUsers, getUsers, unfollow
 } from "../../Redux/Reducers/users-reducer";  // Action Creators
 import Users from "./Users";
 import Preloader from "../common/Preloader";
@@ -32,6 +32,7 @@ type MapDispatchPropsType = {
     getUsers: (currentPage: number, PageSize: number) => void;
     follow: (userId: number) => void;
     unfollow: (userId: number) => void;
+    getSearchingUsers: (currentPage: number, PageSize: number, find: string) => void
 }
 
 type PropsType = MapStatePropsType & MapDispatchPropsType;
@@ -89,6 +90,7 @@ class UsersAPI extends React.Component<PropsType> {
                    unfollow={this.props.unfollow}
                    onPageChanged={this.onPageChanged}
                    followingInProgress={this.props.followingInProgress}
+                   getSearchingUsers={this.props.getSearchingUsers}
             />
         </>
     }
@@ -148,5 +150,5 @@ let mapStateToProps = (state: AppStateType) => {
 // export default withAuthRedirect (connect(mapStateToProps, {follow, unfollow, currentPage, isFollowingProgress, getUsers})(UsersAPI));
 
 export default compose(
-    connect<MapStatePropsType, MapDispatchPropsType, unknown, AppStateType>(mapStateToProps, {follow, unfollow, getUsers}),
+    connect<MapStatePropsType, MapDispatchPropsType, unknown, AppStateType>(mapStateToProps, {follow, unfollow, getUsers, getSearchingUsers}),
 )(UsersAPI)
