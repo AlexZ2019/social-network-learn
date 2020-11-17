@@ -1,16 +1,16 @@
 import React, {ComponentType} from 'react';
 import './App.css';
 import Menu from "./components/Menu/Menu";
-import {Redirect, Route, withRouter, Switch} from "react-router-dom";
-import UsersContainer from "./components/Users/UsersContainer";
+import {Redirect, Route, Switch, withRouter} from "react-router-dom";
+import {UsersPage} from "./components/Users/UsersContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import Login from "./components/Login/Login";
 import {connect} from "react-redux";
 import {compose} from "redux";
 import Preloader from "./components/common/Preloader";
 import {initializeApp} from "./Redux/Reducers/app-reducer";
 import {withSuspense} from "./hoc/withSuspense";
 import {AppStateType} from "./Redux/redux-store";
+import {Login} from "./components/Login/Login";
 
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
@@ -57,7 +57,7 @@ class App extends React.Component<Props & DispatchPropsType> {
                     />
                     <Route path='/users'
                            render={() =>
-                               <UsersContainer/>
+                               <UsersPage/>
                            }
                     />
                     <Route path='/login/facebook'
