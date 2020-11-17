@@ -1,14 +1,15 @@
 import React from "react";
 import {connect} from "react-redux";
 import {
-    follow, getSearchingUsers, getUsers, unfollow
+    FilterType,
+    follow, getUsers, unfollow
 } from "../../Redux/Reducers/users-reducer";  // Action Creators
 import Users from "./Users";
 import Preloader from "../common/Preloader";
 import {compose} from "redux";
 import {
     currentPage,
-    followingInProgress,
+    followingInProgress, getUsersFilter,
     isFetching,
     pageSize,
     totalUsersCount,
@@ -26,20 +27,21 @@ type MapStatePropsType = {
     currentPage: number;
     isFetching: boolean;
     followingInProgress: Array<number>;
+    filter: FilterType
 }
 
 type MapDispatchPropsType = {
-    getUsers: (currentPage: number, PageSize: number) => void;
+    getUsers: (currentPage: number, PageSize: number, filter: FilterType) => void;
     follow: (userId: number) => void;
     unfollow: (userId: number) => void;
-    getSearchingUsers: (currentPage: number, PageSize: number, find: string) => void
+    // getSearchingUsers: (currentPage: number, PageSize: number, find: string) => void
 }
 
 type PropsType = MapStatePropsType & MapDispatchPropsType;
 
 class UsersAPI extends React.Component<PropsType> {
     componentDidMount() {
-        this.props.getUsers(this.props.currentPage, this.props.pageSize);
+        this.props.getUsers(this.props.currentPage, this.props.pageSize, this.props.filter);
         // this.props.IsFetching(true)
         // usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
         //     this.props.IsFetching(false);
@@ -76,7 +78,10 @@ class UsersAPI extends React.Component<PropsType> {
     }
 
     onPageChanged = (page: number) => {
-        this.props.getUsers(page, this.props.pageSize)
+        this.props.getUsers(page, this.props.pageSize, this.props.filter)
+    }
+    onFilterChanged = (filter: FilterType) => {
+        this.props.getUsers(1, this.props.pageSize, filter)
     }
 
     render() {
@@ -90,7 +95,7 @@ class UsersAPI extends React.Component<PropsType> {
                    unfollow={this.props.unfollow}
                    onPageChanged={this.onPageChanged}
                    followingInProgress={this.props.followingInProgress}
-                   getSearchingUsers={this.props.getSearchingUsers}
+                   onFilterChanged={this.onFilterChanged}
             />
         </>
     }
@@ -110,7 +115,8 @@ let mapStateToProps = (state: AppStateType) => {
         totalUsersCount: totalUsersCount(state),
         currentPage: currentPage(state),
         isFetching: isFetching(state),
-        followingInProgress: followingInProgress(state)
+        followingInProgress: followingInProgress(state),
+        filter: getUsersFilter(state)
     }
 }
 // let mapDispatchToProps = (dispatch) => {
@@ -150,5 +156,5 @@ let mapStateToProps = (state: AppStateType) => {
 // export default withAuthRedirect (connect(mapStateToProps, {follow, unfollow, currentPage, isFollowingProgress, getUsers})(UsersAPI));
 
 export default compose(
-    connect<MapStatePropsType, MapDispatchPropsType, unknown, AppStateType>(mapStateToProps, {follow, unfollow, getUsers, getSearchingUsers}),
+    connect<MapStatePropsType, MapDispatchPropsType, unknown, AppStateType>(mapStateToProps, {follow, unfollow, getUsers}),
 )(UsersAPI)

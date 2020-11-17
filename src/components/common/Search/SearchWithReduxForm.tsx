@@ -22,7 +22,7 @@ const SearchFormRedux = reduxForm<FormData>({
     form: "search"
 })(SearchForm)
 
-const Search: React.FC<PropsType> = (props) => {
+const SearchWithReduxForm: React.FC<PropsType> = (props) => {
 
     const searchUsers = (formData: FormData) => {
         if (formData.search.length >= 3) { // TODO: refactor if
@@ -34,4 +34,4 @@ const Search: React.FC<PropsType> = (props) => {
 }
 
 
-export default Search
+export default SearchWithReduxForm

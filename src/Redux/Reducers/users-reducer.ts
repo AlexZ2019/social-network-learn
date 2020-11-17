@@ -11,10 +11,15 @@ let initialState = {
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: false,
-    followingInProgress: [] as Array<number> // Array of userIds
+    followingInProgress: [] as Array<number>, // Array of userIds
+    filter: {
+        term: "",
+        friend: null as null | boolean
+    }
 };
 
 export type InitialStateType = typeof initialState;
+export type FilterType = typeof initialState.filter
 const usersReducer = (state = initialState, action: Actions): InitialStateType => {
     switch (action.type) {
         case "FOLLOW":
@@ -51,6 +56,13 @@ const usersReducer = (state = initialState, action: Actions): InitialStateType =
             return {
                 ...state,
                 currentPage: action.currentPage
+            }
+
+        }
+        case "SET_FILTER": {
+            return {
+                ...state,
+                filter: action.payload
             }
 
         }
@@ -93,6 +105,9 @@ export const actions = {
     setCurrentPage: (currentPage: number) => (
         {type: "SET_CURRENT_PAGE", currentPage: currentPage} as const
     ),
+    setFilterForSearch: (filter: FilterType) => (
+        {type: "SET_FILTER", payload: filter} as const
+    ),
     setTotalUsersCount: (totalUsersCount: number) => (
         {type: "SET_TOTAL_USERS_COUNT", totalUsersCount: totalUsersCount} as const
     ),
@@ -107,26 +122,27 @@ export const actions = {
 // export type Thunk = ThunkAction<Promise<void>, AppStateType, unknown, Actions>
 type Thunk = BaseThunkType<Actions>
 
-export const getUsers = (currentPage: number, pageSize: number): Thunk => {
+export const getUsers = (currentPage: number, pageSize: number, filter: FilterType): Thunk => {
     return async (dispatch) => {
         dispatch(actions.IsFetching(true));
-        let data = await usersAPI.getUsers(currentPage, pageSize);
+        dispatch(actions.setCurrentPage(currentPage));
+        dispatch(actions.setFilterForSearch(filter));
+        let data = await usersAPI.getUsers(currentPage, pageSize, filter.term, filter.friend);
         dispatch(actions.IsFetching(false));
         dispatch(actions.setUsersFromServer(data.items));
         dispatch(actions.setTotalUsersCount(data.totalCount));
-        dispatch(actions.setCurrentPage(currentPage));
     }
 }
-export const getSearchingUsers = (currentPage: number, pageSize: number, find: string): Thunk => {
-    return async (dispatch) => {
-        dispatch(actions.IsFetching(true));
-        let data = await usersAPI.searchUsers(currentPage, pageSize, find)
-        dispatch(actions.IsFetching(false));
-        dispatch(actions.setUsersFromServer(data.items));
-        dispatch(actions.setTotalUsersCount(data.totalCount));
-        dispatch(actions.setCurrentPage(currentPage));
-    }
-}
+// export const getSearchingUsers = (currentPage: number, pageSize: number, find: string): Thunk => {
+//     return async (dispatch) => {
+//         dispatch(actions.IsFetching(true));
+//         let data = await usersAPI.searchUsers(currentPage, pageSize, find)
+//         dispatch(actions.IsFetching(false));
+//         dispatch(actions.setUsersFromServer(data.items));
+//         dispatch(actions.setTotalUsersCount(data.totalCount));
+//         dispatch(actions.setCurrentPage(currentPage));
+//     }
+// }
 const _followUnfollowFlow = async (dispatch: Dispatch<Actions>, userId: number, apiMethod: (userId: number) => Promise<APIResponseType>, actionCreator: (userId: number) => Actions) => {
     // old func without refactoring
     // return async (dispatch) => {
