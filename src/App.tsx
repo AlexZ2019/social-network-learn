@@ -90,7 +90,6 @@ export default compose<ComponentType>(
 (App);
 
 /*
-
 <Route exact path='/profile'
                            render={() => <Profile store={this.props.store}/>}
                     />

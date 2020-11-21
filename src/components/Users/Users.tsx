@@ -11,7 +11,10 @@ import {
     getUsersFilter,
     getUsersFromState
 } from "../../Redux/selectors/users-selector";
+import { useHistory } from "react-router-dom";
+import * as queryString from "querystring";
 
+type QueryParamsType = { term?: string, friend?: string, page?: string };
 export let Users: React.FC = () => {
     let totalUsersCount = useSelector(getTotalUsersCount)
     let currentPage = useSelector(getCurrentPage)
@@ -19,11 +22,50 @@ export let Users: React.FC = () => {
     let users = useSelector(getUsersFromState)
     let filter = useSelector(getUsersFilter)
     let followingInProgress = useSelector(getFollowingInProgress)
+    const history = useHistory()
+    const dispatch = useDispatch()
+    useEffect(() => {
+        const parsedSearch = queryString.parse(history.location.search.substr(1)) as QueryParamsType
+        let actualPage = currentPage
+        let actualFilter = filter
+
+        if (!!parsedSearch.page) {
+            actualPage = Number(parsedSearch.page)
+        }
+        if (!!parsedSearch.term) {
+            actualFilter = {...actualFilter, term: parsedSearch.term}
+        }
+        switch (parsedSearch.friend){
+            case "null":
+                actualFilter = {...actualFilter, friend: null}
+                break
+            case "true":
+                actualFilter = {...actualFilter, friend: true}
+                break
+            case "false":
+                actualFilter = {...actualFilter, friend: false}
+                break
+        }
+        dispatch(getUsers(actualPage, pageSize, actualFilter))
+    }, [])
 
     useEffect(() => {
-        dispatch(getUsers(currentPage, pageSize, filter))
-    }, [])
-    const dispatch = useDispatch()
+        const query: QueryParamsType = {}
+        if (!!filter.term) {
+            query.term = filter.term
+        }
+        if (filter.friend !== null) {
+            query.friend = String(filter.friend)
+        }
+        if (currentPage !== 1) {
+            query.page = String(currentPage)
+        }
+        history.push({
+            pathname: "/users",
+            search: queryString.stringify(query)
+        })
+    }, [filter, currentPage])
+
 
     const onPageChanged = (page: number) => {
         dispatch(getUsers(page, pageSize, filter))

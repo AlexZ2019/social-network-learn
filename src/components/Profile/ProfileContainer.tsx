@@ -67,7 +67,6 @@ class ProfileContainer extends Component<PropsType> {
         if (prevProps.match.params.userId !== this.props.match.params.userId) {
             this.renewalProfile()
         }
-
     }
 
     render() {
