@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {login} from "../../Redux/Reducers/auth-reducer";
 import {Redirect} from "react-router-dom";
 import s from '../../utilities/FormsControl/FormsControl.module.css';
-import {getCaptchaUrl, getIsAuth} from "../../Redux/selectors/auth-reducer";
+import {getCaptchaUrl, getIsAuth} from "../../Redux/selectors/auth-selector";
 
 type loginFormOwnProps = {
     captchaUrl: string | null

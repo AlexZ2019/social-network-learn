@@ -1,9 +1,7 @@
 import React, {ComponentType} from 'react';
 import './App.css';
-import Menu from "./components/Menu/Menu";
-import {Redirect, Route, Switch, withRouter} from "react-router-dom";
+import {Link, Redirect, Route, Switch, withRouter} from "react-router-dom";
 import {UsersPage} from "./components/Users/UsersContainer";
-import HeaderContainer from "./components/Header/HeaderContainer";
 import {connect} from "react-redux";
 import {compose} from "redux";
 import Preloader from "./components/common/Preloader";
@@ -11,7 +9,13 @@ import {initializeApp} from "./Redux/Reducers/app-reducer";
 import {withSuspense} from "./hoc/withSuspense";
 import {AppStateType} from "./Redux/redux-store";
 import {Login} from "./components/Login/Login";
+import "antd/dist/antd.css"
+import {Breadcrumb, Layout, Menu} from 'antd';
+import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
+import Header from './components/Header/Header';
 
+const { SubMenu } = Menu;
+const {Content, Footer, Sider } = Layout;
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 
@@ -42,40 +46,92 @@ class App extends React.Component<Props & DispatchPropsType> {
             return <Preloader/>
         }
         return (
-            <div className="App">
-                <HeaderContainer/>
-                <Menu/>
-                <Switch>
-                    <Route exact path='/'
-                           render={() => <Redirect to={"/profile"}/>}
-                    />
-                    <Route path='/profile/:userId?'
-                           render={() => <SuspendedProfile/>}
-                    />
-                    <Route path='/dialogs'
-                           render={() => <SuspendedDialogs/>}
-                    />
-                    <Route path='/users'
-                           render={() =>
-                               <UsersPage/>
-                           }
-                    />
-                    <Route path='/login/facebook'
-                           render={() =>
-                               <div>facebook</div>}
-                    />
-                    <Route path='/login'
-                           render={() =>
-                               <Login/>
-                           }
-                    />
-                    <Route path='*'
-                           render={() =>
-                               <div>404 not found</div>
-                           }
-                    />
-                </Switch>
-            </div>
+            // <div className="App">
+            //     <HeaderContainer/>
+            //     <MainMenu/>
+            //     <Switch>
+            //         <Route exact path='/'
+            //                render={() => <Redirect to={"/profile"}/>}
+            //         />
+            //         <Route path='/profile/:userId?'
+            //                render={() => <SuspendedProfile/>}
+            //         />
+            //         <Route path='/dialogs'
+            //                render={() => <SuspendedDialogs/>}
+            //         />
+            //         <Route path='/users'
+            //                render={() =>
+            //                    <UsersPage/>
+            //                }
+            //         />
+            //         <Route path='/login/facebook'
+            //                render={() =>
+            //                    <div>facebook</div>}
+            //         />
+            //         <Route path='/login'
+            //                render={() =>
+            //                    <Login/>
+            //                }
+            //         />
+            //         <Route path='*'
+            //                render={() =>
+            //                    <div>404 not found</div>
+            //                }
+            //         />
+            //     </Switch>
+            // </div>
+            <Layout>
+                <Header/>
+                <Content style={{ padding: '0 50px' }}>
+                    <Breadcrumb style={{ margin: '16px 0' }}>
+                        <Breadcrumb.Item>Home</Breadcrumb.Item>
+                        <Breadcrumb.Item>List</Breadcrumb.Item>
+                        <Breadcrumb.Item>App</Breadcrumb.Item>
+                    </Breadcrumb>
+                    <Layout className="site-layout-background" style={{ padding: '24px 0' }}>
+                        <Sider className="site-layout-background" width={200}>
+                            <Menu
+                                mode="inline"
+                                defaultSelectedKeys={['2']}
+                                defaultOpenKeys={['sub1']}
+                                style={{ height: '100%' }}
+                            >
+                                <SubMenu key="sub1" icon={<UserOutlined/>} title="My profile">
+                                    <Menu.Item key="1"><Link to="/profile">Profile</Link></Menu.Item>
+                                    <Menu.Item key="2"><Link to ="/dialogs">Messages</Link></Menu.Item>
+                                    <Menu.Item key="3"><Link to ="/friends">Friends</Link></Menu.Item>
+                                </SubMenu>
+                                <SubMenu key="sub2" icon={<LaptopOutlined />} title="Menu">
+                                    <Menu.Item key="4"><Link to ="/users">Users</Link></Menu.Item>
+                                    <Menu.Item key="5">option5</Menu.Item>
+                                    <Menu.Item key="6">option6</Menu.Item>
+                                    <Menu.Item key="7">option7</Menu.Item>
+                                    <Menu.Item key="8">option8</Menu.Item>
+                                </SubMenu>
+                                <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
+                                    <Menu.Item key="9">option9</Menu.Item>
+                                    <Menu.Item key="10">option10</Menu.Item>
+                                    <Menu.Item key="11">option11</Menu.Item>
+                                    <Menu.Item key="12">option12</Menu.Item>
+                                </SubMenu>
+                            </Menu>
+                        </Sider>
+                        <Content style={{ padding: '0 24px', minHeight: 280 }}>
+                            <Switch>
+                                <Route exact path='/'
+                                  render={() => <Redirect to={"/profile"}/>}/>
+                                <Route path='/profile/:userId?' render={() => <SuspendedProfile/>}/>
+                                <Route path='/dialogs' render={() => <SuspendedDialogs/>}/>
+                                <Route path='/users' render={() => <UsersPage/>}/>
+                                <Route path='/login/facebook' render={() => <div>facebook</div>}/>
+                                <Route path='/login' render={() => <Login/>}/>
+                                <Route path='*' render={() => <div>404 not found</div>}/>
+                            </Switch>
+                        </Content>
+                    </Layout>
+                </Content>
+                <Footer style={{ textAlign: 'center' }}>Learn-social-network ©2020 Created by AlexZ</Footer>
+            </Layout>
         );
     }
 }

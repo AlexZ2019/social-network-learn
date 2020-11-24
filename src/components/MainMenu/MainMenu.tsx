@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import s from './Menu.module.css'
 import {NavLink} from "react-router-dom";
 
-class Menu extends Component {
+class MainMenu extends Component {
 
     render () {
         return (
@@ -17,5 +17,5 @@ class Menu extends Component {
         )
     };
 }
-export default Menu;
+export default MainMenu;
 
