@@ -13,6 +13,7 @@ import "antd/dist/antd.css"
 import {Breadcrumb, Layout, Menu} from 'antd';
 import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
 import Header from './components/Header/Header';
+import ChatPage from "./components/Pages/Chat/ChatPage";
 
 const { SubMenu } = Menu;
 const {Content, Footer, Sider } = Layout;
@@ -103,7 +104,7 @@ class App extends React.Component<Props & DispatchPropsType> {
                                 </SubMenu>
                                 <SubMenu key="sub2" icon={<LaptopOutlined />} title="Menu">
                                     <Menu.Item key="4"><Link to ="/users">Users</Link></Menu.Item>
-                                    <Menu.Item key="5">option5</Menu.Item>
+                                    <Menu.Item key="5"><Link to ="/chat">Chat</Link></Menu.Item>
                                     <Menu.Item key="6">option6</Menu.Item>
                                     <Menu.Item key="7">option7</Menu.Item>
                                     <Menu.Item key="8">option8</Menu.Item>
@@ -125,6 +126,7 @@ class App extends React.Component<Props & DispatchPropsType> {
                                 <Route path='/users' render={() => <UsersPage/>}/>
                                 <Route path='/login/facebook' render={() => <div>facebook</div>}/>
                                 <Route path='/login' render={() => <Login/>}/>
+                                <Route path='/chat' render={() => <ChatPage/>}/>
                                 <Route path='*' render={() => <div>404 not found</div>}/>
                             </Switch>
                         </Content>
