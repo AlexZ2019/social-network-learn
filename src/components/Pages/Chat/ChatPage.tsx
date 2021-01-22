@@ -1,4 +1,7 @@
 import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {sendMessage, startMessagesListening, stopMessagesListening} from "../../../Redux/Reducers/chat-reducer";
+import {AppStateType} from "../../../Redux/redux-store";
 
 export type ChatMessageType = {
     message: string
@@ -6,7 +9,6 @@ export type ChatMessageType = {
     userId: number
     userName: string
 }
-
 
 const ChatPage: React.FC = () => {
     return (
@@ -18,55 +20,24 @@ const ChatPage: React.FC = () => {
 
 const Chat: React.FC = () => {
 
-    let [wsChannel, setWsChannel] = useState<WebSocket | null>(null);
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        let ws: WebSocket;
-        const reconnectWsChannel = () => {
-            setTimeout(createChannel, 3000)
-        }
-        function createChannel() {
-            if(ws !== null) {
-                ws.removeEventListener("close", reconnectWsChannel)
-            }
-            ws = new WebSocket("wss://social-network.samuraijs.com/handlers/ChatHandler.ashx")
-            ws.addEventListener("close", reconnectWsChannel)
-            setWsChannel(ws);
-        }
-        createChannel()
-
+        dispatch(startMessagesListening())
         return () => {
-            ws.removeEventListener("close", reconnectWsChannel);
-            ws.close();
+            dispatch(stopMessagesListening())
         }
-
     }, [])
 
-    useEffect(() => {
-        wsChannel?.addEventListener("close", () => {
-            // setTimeout(createChannel, 3000)
-        })
-    }, [wsChannel])
-
     return <div>
-        <Messages wsChannel={wsChannel}/>
-        <AddMessageForm wsChannel={wsChannel}/>
+        <Messages />
+        <AddMessageForm />
     </div>
 }
 
-const Messages: React.FC<{wsChannel: WebSocket | null}> = ({wsChannel}) => {
+const Messages: React.FC = () => {
+    const messages = useSelector((state: AppStateType) => state.chat.messages)
 
-    let [messages, setMessages] = useState<ChatMessageType[]>([])
-    
-    useEffect(() => {
-        const setMessagesHandler = (e: MessageEvent) => {
-            let newMessages = JSON.parse(e.data)
-
-            setMessages((prevMessages) =>[...prevMessages, ...newMessages])
-        };
-        wsChannel?.addEventListener("message", setMessagesHandler)
-        return wsChannel?.removeEventListener("message", setMessagesHandler)
-    }, [wsChannel])
 
     return <div style={{height: "400px", overflowY: "auto"}}>
         {messages.map((message, index) => <Message key={index} message={message} />)}
@@ -84,36 +55,32 @@ const Message: React.FC<{message: ChatMessageType}> = ({message}) => {
 
 }
 
-const AddMessageForm: React.FC<{wsChannel: WebSocket | null}> = ({wsChannel}) => {
+const AddMessageForm: React.FC = () => {
 
-    let [readyStatus, setReadyStatus] = useState<"pending" | "ready">("pending")
+    const dispatch = useDispatch()
+    // let [readyStatus, setReadyStatus] = useState<"pending" | "ready">("pending")
 
-    useEffect(() => {
-        const setOpenedWsChannel = () => {
-            setReadyStatus("ready")
-        };
-        wsChannel?.addEventListener("open", setOpenedWsChannel)
-
-        return wsChannel?.removeEventListener("open", setOpenedWsChannel)
-    },[wsChannel])
 
     let [message, setMessage] = useState("")
 
-    const sendMessage = () => {
+    const sendMessageHandler = () => {
+
         if (!message) {
             return
         }
-        wsChannel?.send(message)
+        dispatch(sendMessage(message))
         setMessage("")
     }
 
     return <div>
         <div>
-            <textarea onChange={(e) => setMessage(e.currentTarget.value)} value={message} name="" id="">
+            <textarea onChange={(e) => setMessage(e.currentTarget.value)}
+                      value={message} name="" id=""
+            >
 
             </textarea>
         </div>
-        <button disabled={wsChannel == null && readyStatus !== "ready"} onClick={sendMessage}>send</button>
+        <button disabled={false} onClick={sendMessageHandler}>send</button>
     </div>
 }
 

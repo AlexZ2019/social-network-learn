@@ -7,6 +7,7 @@ import authReducer from "./Reducers/auth-reducer";
 import thunkMiddleware, {ThunkAction} from "redux-thunk";
 import {reducer as formReducer} from "redux-form";
 import appReducer from "./Reducers/app-reducer";
+import chatReducer from "./Reducers/chat-reducer";
 
 let rootReducer = combineReducers({
     profile: profileReducer,
@@ -15,7 +16,8 @@ let rootReducer = combineReducers({
     users: usersReducer,
     auth: authReducer,
     form: formReducer,
-    app: appReducer
+    app: appReducer,
+    chat: chatReducer
 });
 
 type RootReducerType = typeof rootReducer;

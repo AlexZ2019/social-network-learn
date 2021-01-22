@@ -47,9 +47,9 @@ let store = {
     _callSubscriber () {
 
     },
-    subscribe (observer) {
-        this._callSubscriber = observer;    //observer - it's a pattern!!! //  publisher-subscriber
-    },
+    // subscribe (observer) {
+    //     this._callSubscriber = observer;    //observer - it's a pattern!!! //  publisher-subscriber
+    // },
     // addPost () {
         // let newPost = {
         //     post: this._state.profile.newPostText
