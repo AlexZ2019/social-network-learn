@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {sendMessage, startMessagesListening, stopMessagesListening} from "../../../Redux/Reducers/chat-reducer";
 import {AppStateType} from "../../../Redux/redux-store";
@@ -20,6 +20,7 @@ const ChatPage: React.FC = () => {
 
 const Chat: React.FC = () => {
 
+    const wsStatus = useSelector((state: AppStateType) => state.chat.status);
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -30,19 +31,41 @@ const Chat: React.FC = () => {
     }, [])
 
     return <div>
+        {wsStatus === "error" && <div>Error. Please, reload the page</div>}
         <Messages />
-        <AddMessageForm />
+        <AddMessageForm/>
     </div>
 }
 
-const Messages: React.FC = () => {
+const Messages: React.FC = React.memo(() => {
+    const messagesAnchorRef = useRef<HTMLDivElement>(null)
     const messages = useSelector((state: AppStateType) => state.chat.messages)
+    let [isAutoScroll, setAutoScroll] = useState(true)
 
+    useEffect(() => {
+        if (isAutoScroll) {
+            messagesAnchorRef.current?.scrollIntoView({behavior: "smooth"})
+        }
 
-    return <div style={{height: "400px", overflowY: "auto"}}>
-        {messages.map((message, index) => <Message key={index} message={message} />)}
+    },[messages])
+
+    const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+        const element = e.currentTarget;
+        if (Math.abs((element.scrollHeight - element.scrollTop) - element.clientHeight) < 300) {
+            !isAutoScroll && setAutoScroll(true)
+        }
+        else {
+            isAutoScroll && setAutoScroll(false)
+        }
+    }
+
+    return <div style={{height: "400px", overflowY: "auto"}} onScroll={scrollHandler}>
+        {messages.map((message, index) => <Message key={message.id} message={message} />)}
+    <div ref={messagesAnchorRef}>
+
     </div>
-}
+    </div>
+})
 
 const Message: React.FC<{message: ChatMessageType}> = ({message}) => {
 
@@ -56,10 +79,8 @@ const Message: React.FC<{message: ChatMessageType}> = ({message}) => {
 }
 
 const AddMessageForm: React.FC = () => {
-
+    const wsStatus = useSelector((state: AppStateType) => state.chat.status);
     const dispatch = useDispatch()
-    // let [readyStatus, setReadyStatus] = useState<"pending" | "ready">("pending")
-
 
     let [message, setMessage] = useState("")
 
@@ -80,7 +101,7 @@ const AddMessageForm: React.FC = () => {
 
             </textarea>
         </div>
-        <button disabled={false} onClick={sendMessageHandler}>send</button>
+        <button disabled={wsStatus === "ready"} onClick={sendMessageHandler}>send</button>
     </div>
 }
 

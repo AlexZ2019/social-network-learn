@@ -16,6 +16,7 @@ type LoginResponseType = {
 
 
 export const AuthAPI = {
+
     getAuthStatus() {
         return instance.get<APIResponseType<GetAuthStatusResponseType>>(`auth/me`).then(response => response.data)
     },
@@ -26,4 +27,5 @@ export const AuthAPI = {
     logout() {
         return instance.delete('auth/login')
     }
+
 }

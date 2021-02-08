@@ -1,24 +1,54 @@
-type SubscriberType = (messages: ChatMessageType[]) => void
+type MessageReceivedSubscriberType = (messages: ChatMessageAPIType[]) => void
+export type WsStatus = "pending" | "ready" | "error"
+type StatusChangedSubscriberType = (status: WsStatus) => void
+type EventNames = "messages-received" | "status-changed"
 
 let ws: WebSocket | null;
 
-let subscribers = [] as SubscriberType[]
+const subscribers = {
+    "messages-received": [] as MessageReceivedSubscriberType[],
+    "status-changed": [] as StatusChangedSubscriberType[]
+}
 
 const reconnectWsChannel = () => {
+    subscribers["status-changed"].forEach(s => s("pending"))
     setTimeout(createChannel, 3000)
+}
+
+function cleanUp() {
+    ws?.removeEventListener("close", reconnectWsChannel);
+    ws?.removeEventListener("message", messageHandler);
+    ws?.removeEventListener("open", notifySubscribersAboutStatusOpen)
+    ws?.removeEventListener("error", notifySubscribersAboutStatusError)
 }
 
 const messageHandler = (e: MessageEvent) => {
     const newMessage = JSON.parse(e.data)
-    subscribers.forEach(s => s(newMessage))
+    subscribers["messages-received"].forEach(s => s(newMessage))
+}
+
+function notifySubscribersAboutStatus(status: WsStatus) {
+    subscribers["status-changed"].forEach(s => s(status))
+}
+
+function notifySubscribersAboutStatusOpen() {
+    notifySubscribersAboutStatus("ready")
+}
+
+function notifySubscribersAboutStatusError() {
+    notifySubscribersAboutStatus("error")
+    console.error("RELOAD PAGE")
 }
 
 function createChannel() {
-    ws?.removeEventListener("close", reconnectWsChannel);
-    ws?.close();
+    cleanUp()
+    ws?.close()
     ws = new WebSocket("wss://social-network.samuraijs.com/handlers/ChatHandler.ashx")
+    notifySubscribersAboutStatus("pending")
     ws.addEventListener("close", reconnectWsChannel)
     ws.addEventListener("message", messageHandler)
+    ws.addEventListener("open", notifySubscribersAboutStatusOpen)
+    ws.addEventListener("error", notifySubscribersAboutStatusError)
 }
 
 export const chatApi = {
@@ -27,27 +57,30 @@ export const chatApi = {
         createChannel()
     },
     stop() {
-        subscribers = [];
-        ws?.removeEventListener("close", reconnectWsChannel);
-        ws?.removeEventListener("message", messageHandler);
+        subscribers["messages-received"] = [];
+        subscribers["status-changed"] = [];
+        cleanUp();
         ws?.close();
     },
-    subscribe(callback: SubscriberType) {
-        subscribers.push(callback);
+    subscribe(eventName: EventNames, callback: MessageReceivedSubscriberType | StatusChangedSubscriberType) {
+        // @ts-ignore
+        subscribers[eventName].push(callback);
         return () => {
-            subscribers = subscribers.filter(s => s !== callback);
+            // @ts-ignore
+            subscribers[eventName] = subscribers[eventName].filter(s => s !== callback);
         }
     },
-    unsubscribe(callback: SubscriberType) {
-        subscribers = subscribers.filter(s => s !== callback);
-    },
+    unsubscribe(eventName: EventNames, callback: MessageReceivedSubscriberType | StatusChangedSubscriberType) {
+        // @ts-ignore
+        subscribers[eventName] = subscribers[eventName].filter(s => s !== callback);
+        },
     sendMessage(message: string) {
         ws?.send(message)
     }
 
 }
 
-export type ChatMessageType = {
+export type ChatMessageAPIType = {
     message: string
     photo: string
     userId: number
