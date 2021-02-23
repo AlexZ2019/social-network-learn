@@ -101,7 +101,7 @@ const AddMessageForm: React.FC = () => {
 
             </textarea>
         </div>
-        <button disabled={wsStatus === "ready"} onClick={sendMessageHandler}>send</button>
+        <button disabled={wsStatus === "pending"} onClick={sendMessageHandler}>send</button>
     </div>
 }
 

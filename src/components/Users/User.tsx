@@ -7,11 +7,11 @@ import {UserType} from "../../Redux/Types/types";
 type PropsType = {
     user: UserType,
     followingInProgress: Array<number>,
-    follow: (userId: number) => void,
-    unfollow: (userId: number) => void
+    followUser: (userId: number) => void,
+    unfollowUser: (userId: number) => void
 }
 
-let User: FC<PropsType> = ({user, followingInProgress, follow, unfollow}) => {
+let User: FC<PropsType> = ({user, followingInProgress, followUser, unfollowUser}) => {
     return <React.Fragment>
             <div key={user.id} className={style.user_main}>
                 <span>
@@ -26,10 +26,10 @@ let User: FC<PropsType> = ({user, followingInProgress, follow, unfollow}) => {
                     <div>
                         {user.followed
                             ? <button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
-                                unfollow(user.id)
+                                unfollowUser(user.id)
                             }}>Unfollow</button>
                             : <button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
-                                follow(user.id)
+                                followUser(user.id)
                             }}>Follow</button>}
                     </div>
                 </span>

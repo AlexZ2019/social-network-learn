@@ -63,16 +63,19 @@ export const chatApi = {
         ws?.close();
     },
     subscribe(eventName: EventNames, callback: MessageReceivedSubscriberType | StatusChangedSubscriberType) {
+
         // @ts-ignore
         subscribers[eventName].push(callback);
         return () => {
+
             // @ts-ignore
-            subscribers[eventName] = subscribers[eventName].filter(s => s !== callback);
+            subscribers[eventName] = subscribers[eventName].filter((s: MessageReceivedSubscriberType & StatusChangedSubscriberType) => s !== callback);
         }
     },
     unsubscribe(eventName: EventNames, callback: MessageReceivedSubscriberType | StatusChangedSubscriberType) {
+
         // @ts-ignore
-        subscribers[eventName] = subscribers[eventName].filter(s => s !== callback);
+        subscribers[eventName] = subscribers[eventName].filter((s: MessageReceivedSubscriberType | StatusChangedSubscriberType) => s !== callback);
         },
     sendMessage(message: string) {
         ws?.send(message)

@@ -90,7 +90,7 @@ export const stopMessagesListening = (): ThunkType => async (dispatch) => {
     chatApi.stop();
 }
 
-export const sendMessage = (message: string) => {
+export const sendMessage = (message: string): ThunkType => async dispatch => {
     chatApi.sendMessage(message)
 }
 
