@@ -112,6 +112,7 @@ type Actions = InferActionsTypes<typeof actions>
 // type ThisDispatch = Dispatch<Actions>
 // type Thunk = ThunkAction<Promise<void>, AppStateType, unknown, Actions>
 type Thunk = BaseThunkType<Actions | FormAction>
+
 export const getProfile = (userId: number): Thunk => {
     return async (dispatch) => {
         let data = await ProfileAPI.getProfile(userId)

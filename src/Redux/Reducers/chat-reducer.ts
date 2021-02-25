@@ -9,8 +9,10 @@ let initialState = {
     status: "pending" as WsStatus
 };
 
-export type InitialStateType = typeof initialState
-export type ChatMessageType = ChatMessageAPIType & {id: string}
+export type InitialStateType = typeof initialState;
+
+export type ChatMessageType = ChatMessageAPIType & {id: string};
+
 const chatReducer = (state = initialState, action: Actions) : InitialStateType => {
     switch (action.type) {
         case "GET_GROUP_CHAT_MESSAGES":
@@ -34,7 +36,7 @@ const chatReducer = (state = initialState, action: Actions) : InitialStateType =
 
 // Action Creators V
 
-type Actions = InferActionsTypes<typeof Actions>
+type Actions = InferActionsTypes<typeof Actions>;
 
 const Actions = {
     messagesReceived: (messages: ChatMessageAPIType[]) => {
@@ -51,14 +53,14 @@ const Actions = {
     }
 }
 
-type ThunkType = BaseThunkType<Actions | FormAction>
+type ThunkType = BaseThunkType<Actions | FormAction>;
 
 let _newMessageHandler: ((messages: ChatMessageAPIType[]) => void) | null = null;
 
 const newMessageHandlerCreator = (dispatch: Dispatch) => {
     if (_newMessageHandler === null) {
         _newMessageHandler = (messages) => {
-            dispatch(Actions.messagesReceived(messages))
+            dispatch(Actions.messagesReceived(messages));
         }
     }
 
@@ -70,13 +72,12 @@ let _newWsStatusHandler: ((status: WsStatus) => void) | null = null;
 const newWsStatusHandlerCreator = (dispatch: Dispatch) => {
     if (_newWsStatusHandler === null) {
         _newWsStatusHandler = (status) => {
-            dispatch(Actions.statusChanged(status))
+            dispatch(Actions.statusChanged(status));
         }
     }
 
     return _newWsStatusHandler
 }
-
 
 export const startMessagesListening = (): ThunkType => async (dispatch) => {
     chatApi.start();
@@ -91,7 +92,7 @@ export const stopMessagesListening = (): ThunkType => async (dispatch) => {
 }
 
 export const sendMessage = (message: string): ThunkType => async dispatch => {
-    chatApi.sendMessage(message)
+    chatApi.sendMessage(message);
 }
 
 export default chatReducer;

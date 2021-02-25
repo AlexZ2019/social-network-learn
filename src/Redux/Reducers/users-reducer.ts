@@ -133,6 +133,7 @@ export const getUsers = (currentPage: number, pageSize: number, filter: FilterTy
         dispatch(actions.setTotalUsersCount(data.totalCount));
     }
 }
+
 // export const getSearchingUsers = (currentPage: number, pageSize: number, find: string): Thunk => {
 //     return async (dispatch) => {
 //         dispatch(actions.IsFetching(true));

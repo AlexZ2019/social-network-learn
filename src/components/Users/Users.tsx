@@ -2,7 +2,8 @@ import React, {useEffect} from "react";
 import Paginator from "../common/Paginators/Paginator";
 import User from "./User";
 import {UserSearchForm} from "./UsersSearchForm";
-import {FilterType, follow, getUsers, unfollow} from "../../Redux/Reducers/users-reducer";
+// import {FilterType, follow, getUsers, unfollow} from "../../Redux/Reducers/users-reducer";
+import {FilterType, follow, getUsers, unfollow} from "../../Redux/Reducers/users-reducer-toolkit";
 import {useDispatch, useSelector} from "react-redux";
 import {
     getCurrentPage, getFollowingInProgress,
